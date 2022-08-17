@@ -1,0 +1,37 @@
+﻿@using WebUI.Models;
+@model CartViewModel;
+
+@{
+    ViewData["Title"] = "Ваша корзина";
+}
+@if(Model.ProductsInCarts == null || Model.ProductsInCarts.Count() == 0)
+{
+    <h1>Корзина пуста</h1>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <td>Наименование товара</td>
+                <td>Цена за штуку</td>
+                <td>Количество</td>
+                <td>Общая стоимость</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var prod in Model.ProductsInCarts)
+            {
+                <tr>
+                    <td>@prod.Product.Name</td>
+                    <td>@($"{(prod.Product.Price):C}")</td>
+                    <td>@prod.Amount</td>
+                    <td>@($"{(prod.Product.Price*prod.Amount):C}")</td>
+                    <td><a asp-action="Edit" asp-route-id=@prod.Id>Изменить количество</a></td>
+                    <td><a asp-action="Delete" asp-route-id=@prod.Id>Удалить</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h3>Итого: @($"{Model.ComputePrice():C}")</h3>
+}

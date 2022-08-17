@@ -1,0 +1,97 @@
+﻿@using WebUI.Models
+@using Domain.Entities
+@model CatalogPageViewModel
+@{
+    ViewData["Title"] = "Результаты поиска";
+}
+
+<h3>Найдено @ViewBag.ResultCount товаров. Результаты поиска:</h3>
+<div class="container-flex text-center col-9">
+        <!--Сортировка-->
+        @using(Html.BeginForm("Search", "Catalog", FormMethod.Get))
+            {
+                <input type="text" name="searchString" value="@ViewBag.SearchString" hidden />
+                <label>Способ сортировки</label>
+                <select name="sortMethod">
+                    <option value="name">По алфавиту</option>
+                    <option value="name-desc">По алфавиту в обратном порядке</option>
+                    <option value="price">По возрастанию цены</option>
+                    <option value="price-desc">По убыванию цены</option>
+                </select>
+                    <input type="submit" value="Сортировать">
+            }
+        <!--Конец сортировки-->
+<!--Список карточек товаров-->
+<div class="row">
+    @foreach(Product prod in Model.Products)
+    {
+        <div class="card p-3 m-3" style="width: 13rem;">
+            <a asp-action="Details" asp-route-id="@prod.ProductId"><img src="/images/products/@prod.ImageName" class="card-img-top" alt="@prod.Name"></a>
+            <div class="card-body">
+            <h5 class="card-title"><a class="text-decoration-none" style="color: black;" asp-action="Details" asp-route-id="@prod.ProductId">@prod.Name</a></h5>
+            <h7>@prod.Price.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</h7>
+            <br>
+                @if (@prod.Stock > 0)
+                {
+                    <span style="font-size: small"> Доступно @prod.Stock шт.</span>
+                    using (Html.BeginForm("Add", "Cart", FormMethod.Post))
+                    {
+                        <input type="number" name="id" value="@prod.ProductId" hidden>
+                        <input type="number" name="amount" min="1", max="100" size="5" step="1" value="1">
+                        <input type="submit" value="В корзину" class="btn btn-primary btn-sm rounded-bottom">
+                    }
+                }
+                else
+                {
+                    <span style="font-size: small">Нет в наличии.</span>
+                }
+                <span style="font-size: small">Куплено: @prod.NumberOfPurchases раз.</span>
+
+            </div>
+        </div>
+    }
+</div>
+<!--Конец списка товаров-->
+<!-- Вывод страниц каталога -->
+    <nav>
+        <ul class="pagination">
+            @if(!Model.Pvm.HasPreviousPase)
+            {
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Назад</a>
+            </li>
+            } 
+            else
+            {
+            <li class="page-item">
+                <a class="page-link" asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-page="@(Model.Pvm.CurrentPage-1)">Назад</a>
+            </li>
+            }
+
+            @for(int i = 1; i<=Model.Pvm.TotalPages; i++)
+            {
+                if(Model.Pvm.CurrentPage == i)
+                {
+                <li class="page item"><a class="page-link active" asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-page="@i">@i</a></li>
+                }
+                else
+                {
+                <li class="page item"><a asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-page="@i" class="page-link">@i</a></li>
+                }
+            }
+
+        @if(!Model.Pvm.HasNextPage){
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Вперёд</a>
+            </li>
+        } 
+        else
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-page="@(Model.Pvm.CurrentPage+1)">Вперёд</a>
+            </li>
+        }
+        </ul>
+    </nav>
+<!--Конец вывода страниц-->
+</div>

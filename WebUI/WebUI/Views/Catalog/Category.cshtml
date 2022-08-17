@@ -1,0 +1,143 @@
+﻿@using WebUI.Models
+@using Domain.Entities
+@model CatalogPageViewModel
+
+@{
+    ViewData["Title"] = "Каталог";
+}
+<div class="row">
+    <!--Боковая панель-->
+    <div class="col-3">
+        <!-- Навигация по категориям -->
+        <div class="list-group">
+            @foreach(Category c in ViewBag.Categories)
+            {
+                if (c.CategoryId == ViewBag.SelectedCategory.CategoryId)
+                {
+                    <a asp-action="Category" asp-route-id="@c.CategoryId" class="list-group-item list-group-item-action active">@c.Name</a>
+                }
+                else
+                {
+                    <a asp-action="Category" asp-route-id="@c.CategoryId" class="list-group-item list-group-item-action">@c.Name</a>
+                }
+            }
+        </div>
+        <!--Конец навигации-->
+        <!--Фильтрация вывода-->
+        <div>
+            @using(Html.BeginForm("Filter", "Catalog", FormMethod.Get))
+            {
+                <div>
+                <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
+                    <label>Цена</label>
+                    <span>
+                        <input type="text" name="minPrice" size="5" placeholder="от @ViewBag.MinPrice" /> 
+                         -
+                        <input type="text" name="maxPrice" size="5" placeholder="до @ViewBag.MaxPrice" />
+                    </span>
+                </div>
+
+                <label>Есть в наличии</label>
+                @if(ViewBag.Availability != null && ViewBag.Availability == "on")
+                { <input type="checkbox" name="availability" value="on" checked /> }
+                else 
+                { <input type="checkbox" name="availability" value="on"/> }
+                <input type="submit" value="Фильтровать" />
+            }
+        </div>
+        <!--Конец фильтрации-->
+    </div>
+<!--Конец боковой панели-->
+
+        <div class="container-flex text-center col-9">
+            <!--Сортировка-->
+             @using(Html.BeginForm("Sort", "Catalog", FormMethod.Get, new { @products = ViewBag.Products}))
+            {
+                <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
+                <label>Способ сортировки</label>
+                <select name="sortMethod">
+                    <option value="name">По алфавиту</option>
+                    <option value="name-desc">По алфавиту в обратном порядке</option>
+                    <option value="price">По возрастанию цены</option>
+                    <option value="price-desc">По убыванию цены</option>
+                </select>
+                    <input type="submit" value="Сортировать">
+            }
+            <!--Конец сортировки-->
+        
+    <!--Список карточек товаров-->
+        <div class="row">
+            @foreach(Product prod in Model.Products)
+            {
+                <div class="card p-3 m-3" style="width: 13rem;">
+                    <a asp-action="Details" asp-route-id="@prod.ProductId"><img src="/images/products/@prod.ImageName" class="card-img-top" alt="@prod.Name"></a>
+                    <div class="card-body">
+                    <h5 class="card-title"><a class="text-decoration-none" style="color: black;" asp-action="Details" asp-route-id="@prod.ProductId">@prod.Name</a></h5>
+                    <h7>@prod.Price.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</h7>
+                    <br>
+                        @if (@prod.Stock > 0)
+                        {
+                            <span style="font-size: small"> Доступно @prod.Stock шт.</span>
+                            using (Html.BeginForm("Add", "Cart", FormMethod.Post))
+                            {
+                                <input type="number" name="id" value="@prod.ProductId" hidden>
+                                <input type="number" name="amount" min="1", max="100" size="5" step="1" value="1">
+                                <input type="submit" value="В корзину" class="btn btn-primary btn-sm rounded-bottom">
+                            }
+                        }
+                        else
+                        {
+                            <span style="font-size: small">Нет в наличии.</span>
+                        }
+                        <span style="font-size: small">Куплено: @prod.NumberOfPurchases раз.</span>
+
+                    </div>
+                </div>
+            }
+        </div>
+    <!--Конец списка товаров-->
+
+<!-- Вывод страниц каталога -->
+    <nav>
+        <ul class="pagination">
+            @if(!Model.Pvm.HasPreviousPase)
+            {
+            <li class="page-item disabled">
+                <a class="page-link">Назад</a>
+            </li>
+            } 
+            else
+            {
+            <li class="page-item">
+                <a class="page-link" asp-action="Category" asp-route-id="@ViewBag.SelectedCategory.CategoryId" asp-route-page="@(Model.Pvm.CurrentPage-1)">Назад</a>
+            </li>
+            }
+
+            @for(int i = 1; i<=Model.Pvm.TotalPages; i++)
+            {
+                if(Model.Pvm.CurrentPage == i)
+                {
+                <li class="page item"><a class="page-link active" asp-action="Category" asp-route-id="@ViewBag.SelectedCategory.CategoryId" asp-route-page="@i">@i</a></li>
+                }
+                else
+                {
+                <li class="page item"><a asp-action="Category" asp-route-id="@ViewBag.SelectedCategory.CategoryId" asp-route-page="@i" class="page-link">@i</a></li>
+                }
+            }
+
+        @if(!Model.Pvm.HasNextPage){
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Вперёд</a>
+            </li>
+        } 
+        else
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Category" asp-route-id="@ViewBag.SelectedCategory.CategoryId" asp-route-page="@(Model.Pvm.CurrentPage+1)">Вперёд</a>
+            </li>
+        }
+        </ul>
+    </nav>
+<!--Конец вывода страниц-->
+    </div>
+</div>
