@@ -38,12 +38,9 @@ namespace WebUI.Controllers
             ViewBag.MinPrice = Convert.ToInt32(await _context.Products.MinAsync(p=>p.Price));
             ViewBag.MaxPrice = Convert.ToInt32(await _context.Products.MaxAsync(p=>p.Price));
 
-            var pageSize = 8;
             var productsFiltered = await _context.Products.Where(p => p.CategoryId == id).ToListAsync();
 
-            var pvm = new PaginationViewModel(productsFiltered.Count, page, pageSize);
-            var productsPage = productsFiltered.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
-            var catalogPvm = new CatalogPageViewModel(productsPage, pvm);
+            AddPagination(productsFiltered, 8, page, out CatalogPageViewModel catalogPvm);
 
             return View(catalogPvm);
         }
@@ -78,17 +75,12 @@ namespace WebUI.Controllers
             ViewBag.SelectedCategory = await _context.Categories.FirstAsync(p => p.CategoryId == categoryId);
             ViewBag.Categories = await _context.Categories.ToListAsync();
 
-            
              var products = await _context.Products.Where(p => p.CategoryId == categoryId).ToListAsync();
 
             SortProducts(ref products, sortMethod);
+            AddPagination(products, 8, page, out CatalogPageViewModel catalogPvm);
 
-            var pageSize = 8;
-            var pvm = new PaginationViewModel(products.Count, page, pageSize);
-             var productsPage = products.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
-             var catalogPvm = new CatalogPageViewModel(productsPage, pvm);
-
-             return View("Category", catalogPvm);
+            return View("Category", catalogPvm);
          }
 
         // Поиск по слову
@@ -100,11 +92,8 @@ namespace WebUI.Controllers
             ViewBag.SortMethod = sortMethod;
 
             SortProducts(ref products, sortMethod);
+            AddPagination(products, 8, page, out CatalogPageViewModel catalogPvm);
 
-            int pageSize = 8;
-            var pvm = new PaginationViewModel(products.Count, page, pageSize);
-            var productsPage = products.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
-            var catalogPvm = new CatalogPageViewModel(productsPage, pvm);
             return View(catalogPvm);
         }
 
@@ -139,18 +128,13 @@ namespace WebUI.Controllers
             }
 
             SortProducts(ref products, sortMethod);
-
-
-            int pageSize = 8;
-            var pvm = new PaginationViewModel(products.Count, page, pageSize);
-            var productsPage = products.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
-            var catalogPvm = new CatalogPageViewModel(productsPage, pvm);
+            AddPagination(products, 8, page, out CatalogPageViewModel catalogPvm);
 
             return View(catalogPvm);
         }
 
         [NonAction]
-        public void SortProducts(ref List<Product> products, string sortMethod) 
+        public static void SortProducts(ref List<Product> products, string sortMethod) 
         {
             switch (sortMethod)
             {
@@ -173,6 +157,14 @@ namespace WebUI.Controllers
                     products = products.OrderBy(p => p.Name).ToList();
                     break;
             }
+        }
+
+        [NonAction]
+        public static void AddPagination(List<Product> products, int pageSize, int page, out CatalogPageViewModel catalogPvm)
+        {
+            var pvm = new PaginationViewModel(products.Count, page, pageSize);
+            var productsPage = products.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
+            catalogPvm = new CatalogPageViewModel(productsPage, pvm);
         }
     }
 }
