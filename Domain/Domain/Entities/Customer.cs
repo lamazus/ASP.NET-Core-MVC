@@ -12,7 +12,7 @@ namespace Domain.Entities
         public string Email { get; set; }
         public string City { get; set; }
         public string Address { get; set; }
-        public List<Purchase> Purchases { get; set; } = new List<Purchase>();
+        public List<Order> Orders { get; set; } = new List<Order>();
 
     }
 }

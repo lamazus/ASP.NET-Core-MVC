@@ -27,22 +27,9 @@
         <div>
             @using(Html.BeginForm("Filter", "Catalog", FormMethod.Get))
             {
-                <div>
                 <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
-                    <label>Цена</label>
-                    <span>
-                        <input type="text" name="minPrice" size="5" placeholder="от @ViewBag.MinPrice" /> 
-                         -
-                        <input type="text" name="maxPrice" size="5" placeholder="до @ViewBag.MaxPrice" />
-                    </span>
-                </div>
+                @await Html.PartialAsync("_FiltersForForm")
 
-                <label>Есть в наличии</label>
-                @if(ViewBag.Availability != null && ViewBag.Availability == "on")
-                { <input type="checkbox" name="availability" value="on" checked /> }
-                else 
-                { <input type="checkbox" name="availability" value="on"/> }
-                <input type="submit" value="Фильтровать" />
             }
         </div>
         <!--Конец фильтрации-->
@@ -55,13 +42,7 @@
             {
                 <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
                 <label>Способ сортировки</label>
-                <select name="sortMethod">
-                    <option value="name">По алфавиту</option>
-                    <option value="name-desc">По алфавиту в обратном порядке</option>
-                    <option value="price">По возрастанию цены</option>
-                    <option value="price-desc">По убыванию цены</option>
-                    <option value="popularity">По количеству заказов</option>
-                </select>
+                    @await Html.PartialAsync("_SortMethodsInForm");
                     <input type="submit" value="Сортировать">
             }
             <!--Конец сортировки-->
@@ -90,7 +71,7 @@
                         {
                             <span style="font-size: small">Нет в наличии.</span>
                         }
-                        <span style="font-size: small">Куплено: @prod.NumberOfPurchases раз.</span>
+                        <span style="font-size: small">Куплено: @prod.NumberOfOrders раз.</span>
 
                     </div>
                 </div>

@@ -137,7 +137,7 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("NumberOfPurchases")
+                    b.Property<int>("NumberOfOrders")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
@@ -183,18 +183,18 @@ namespace Infrastructure.Migrations
                     b.ToTable("ProductInCarts");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Purchase", b =>
+            modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
-                    b.Property<int>("PurchaseId")
+                    b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"), 1L, 1);
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateOfPurchase")
+                    b.Property<DateTime>("DateOfOrder")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDelivered")
@@ -205,11 +205,11 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("money");
 
-                    b.HasKey("PurchaseId");
+                    b.HasKey("OrderId");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Purchases");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Domain.Entities.ShoppingCart", b =>
@@ -226,19 +226,19 @@ namespace Infrastructure.Migrations
                     b.ToTable("ShoppingCarts");
                 });
 
-            modelBuilder.Entity("ProductPurchase", b =>
+            modelBuilder.Entity("ProductOrder", b =>
                 {
                     b.Property<int>("ProductsProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PurchasesPurchaseId")
+                    b.Property<int>("OrdersOrderId")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductsProductId", "PurchasesPurchaseId");
+                    b.HasKey("ProductsProductId", "OrdersOrderId");
 
-                    b.HasIndex("PurchasesPurchaseId");
+                    b.HasIndex("OrdersOrderId");
 
-                    b.ToTable("ProductPurchase");
+                    b.ToTable("ProductOrder");
                 });
 
             modelBuilder.Entity("Domain.Entities.Comment", b =>
@@ -282,10 +282,10 @@ namespace Infrastructure.Migrations
                     b.Navigation("ShoppingCart");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Purchase", b =>
+            modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany("Purchases")
+                        .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -293,7 +293,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("ProductPurchase", b =>
+            modelBuilder.Entity("ProductOrder", b =>
                 {
                     b.HasOne("Domain.Entities.Product", null)
                         .WithMany()
@@ -301,16 +301,16 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Purchase", null)
+                    b.HasOne("Domain.Entities.Order", null)
                         .WithMany()
-                        .HasForeignKey("PurchasesPurchaseId")
+                        .HasForeignKey("OrdersOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
-                    b.Navigation("Purchases");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>

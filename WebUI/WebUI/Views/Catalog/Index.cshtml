@@ -1,4 +1,5 @@
-﻿@using Domain.Entities;
+﻿@using Domain.Entities
+@using WebUI.Models
 
 @{
     ViewData["Title"] = "Каталог";
@@ -6,10 +7,19 @@
 }
 <div class="row">
     <div class="list-group col-3">
+        <!--Навигация по категориям НАЧАЛО-->
         @foreach(Category c in ViewBag.Categories)
         {
             <a asp-controller="Catalog" asp-action="Category" asp-route-id="@c.CategoryId" class="list-group-item list-group-item-action">@c.Name</a>
         }
+        <!--Навигация по категориям КОНЕЦ-->
+    </div>
+
+    <div class="container-flex text-center col-9">
+        <!--Вывод карточек товаров НАЧАЛО-->
+        <h4>Популярные товары</h4>
+        @await Component.InvokeAsync("ProductCards", new { products = ViewBag.MostPopularity})
+        <!--Вывод карточек товаров КОНЕЦ-->
     </div>
 
 

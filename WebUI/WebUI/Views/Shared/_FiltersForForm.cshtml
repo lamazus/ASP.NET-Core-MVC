@@ -1,0 +1,15 @@
+﻿<div>
+    <label>Цена</label>
+    <span>
+        <input type="text" name="minPrice" size="5" placeholder="от @ViewBag.MinPrice" /> 
+            -
+        <input type="text" name="maxPrice" size="5" placeholder="до @ViewBag.MaxPrice" />
+    </span>
+</div>
+
+<label>Есть в наличии</label>
+@if(ViewBag.Availability != null && ViewBag.Availability == "on")
+{ <input type="checkbox" name="availability" value="on" checked /> }
+else 
+{ <input type="checkbox" name="availability" value="on"/> }
+<input type="submit" value="Фильтровать" />

@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.EntityConfigurations
 {
-    public class PurchaseConfiguration : IEntityTypeConfiguration<Purchase>
+    public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
-        public void Configure(EntityTypeBuilder<Purchase> builder)
+        public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.HasOne(p => p.Customer)
-                .WithMany(p => p.Purchases);
+                .WithMany(p => p.Orders);
 
             builder.Property(p => p.TotalPrice).IsRequired().HasColumnType("money");
-            builder.Property(p => p.DateOfPurchase).IsRequired();
+            builder.Property(p => p.DateOfOrder).IsRequired();
             builder.Property(p => p.IsDelivered).HasDefaultValue(false);
         }
     }

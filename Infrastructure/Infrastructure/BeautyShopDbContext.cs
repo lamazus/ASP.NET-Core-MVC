@@ -10,7 +10,7 @@ namespace Infrastructure
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Customer> Customers  { get; set; }
         public DbSet<Product> Products  { get; set; }
-        public DbSet<Purchase> Purchases  { get; set; }
+        public DbSet<Order> Orders  { get; set; }
         public DbSet<ProductInCart> ProductInCarts { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
@@ -24,7 +24,7 @@ namespace Infrastructure
             modelBuilder.ApplyConfiguration<Comment>(new CommentConfiguration());
             modelBuilder.ApplyConfiguration<Customer>(new CustomerConfiguration());
             modelBuilder.ApplyConfiguration<Product>(new ProductsConfiguration());
-            modelBuilder.ApplyConfiguration<Purchase>(new PurchaseConfiguration());
+            modelBuilder.ApplyConfiguration<Order>(new OrderConfiguration());
             modelBuilder.ApplyConfiguration<ProductInCart>(new ProductInCartConfiguration());
             modelBuilder.ApplyConfiguration<ShoppingCart>(new ShoppingCartConfiguration());
         }

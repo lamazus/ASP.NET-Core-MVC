@@ -8,7 +8,7 @@ namespace Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
-            builder.HasMany(p => p.Purchases)
+            builder.HasMany(p => p.Orders)
                 .WithOne(p => p.Customer);
 
             builder.HasKey(p => p.CustomerId);

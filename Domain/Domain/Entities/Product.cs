@@ -9,9 +9,9 @@
         public decimal Price { get; set; }
         public int Stock { get; set; }
         public string Description { get; set; } = string.Empty;
-        public int NumberOfPurchases { get; set; }
+        public int NumberOfOrders { get; set; }
         public string ImageName { get; set; } = string.Empty;
         public List<Comment> Comments { get; set; } = new List<Comment>();
-        public List<Purchase> Purchases { get; set; } = new List<Purchase>();
+        public List<Order> Orders { get; set; } = new List<Order>();
     }
 }

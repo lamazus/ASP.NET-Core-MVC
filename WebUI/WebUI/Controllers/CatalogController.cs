@@ -16,7 +16,7 @@ namespace WebUI.Controllers
         }
 
         // Главная страница каталога
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
             if (!HttpContext.Request.Cookies.ContainsKey("Cart"))
             {
@@ -27,6 +27,7 @@ namespace WebUI.Controllers
             }
 
             ViewBag.Categories = await _context.Categories.ToListAsync();
+            ViewBag.MostPopularity = _context.Products.OrderByDescending(p => p.NumberOfOrders).Where(p=>p.Stock>0).Take(4);
 
             return View();
         }
@@ -60,7 +61,7 @@ namespace WebUI.Controllers
                 productVm.Category = product.Category;
                 productVm.Comments = product.Comments;
                 productVm.ImageName = product.ImageName;
-                productVm.NumberOfPurchase = product.NumberOfPurchases;
+                productVm.NumberOfOrder = product.NumberOfOrders;
                 productVm.Price = product.Price;
                 productVm.Description = product.Description;
                 productVm.Stock = product.Stock;
@@ -151,7 +152,7 @@ namespace WebUI.Controllers
                     products = products.OrderByDescending(p => p.Price).ToList();
                     break;
                 case "popularity":
-                    products = products.OrderBy(p => p.NumberOfPurchases).ToList();
+                    products = products.OrderBy(p => p.NumberOfOrders).ToList();
                     break;
                 default:
                     products = products.OrderBy(p => p.Name).ToList();

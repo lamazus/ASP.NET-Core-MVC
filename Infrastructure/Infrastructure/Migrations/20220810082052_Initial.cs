@@ -60,7 +60,7 @@ namespace Infrastructure.Migrations
                     Price = table.Column<decimal>(type: "money", nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    NumberOfPurchases = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    NumberOfOrders = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     Rating = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     ImageName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false, defaultValue: "null")
                 },
@@ -76,21 +76,21 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Purchases",
+                name: "Orders",
                 columns: table => new
                 {
-                    PurchaseId = table.Column<int>(type: "int", nullable: false)
+                    OrderId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "money", nullable: false),
-                    DateOfPurchase = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateOfOrder = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDelivered = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Purchases", x => x.PurchaseId);
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Purchases_Customers_CustomerId",
+                        name: "FK_Orders_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "CustomerId",
@@ -146,26 +146,26 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductPurchase",
+                name: "ProductOrder",
                 columns: table => new
                 {
                     ProductsProductId = table.Column<int>(type: "int", nullable: false),
-                    PurchasesPurchaseId = table.Column<int>(type: "int", nullable: false)
+                    OrdersOrderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductPurchase", x => new { x.ProductsProductId, x.PurchasesPurchaseId });
+                    table.PrimaryKey("PK_ProductOrder", x => new { x.ProductsProductId, x.OrdersOrderId });
                     table.ForeignKey(
-                        name: "FK_ProductPurchase_Products_ProductsProductId",
+                        name: "FK_ProductOrder_Products_ProductsProductId",
                         column: x => x.ProductsProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductPurchase_Purchases_PurchasesPurchaseId",
-                        column: x => x.PurchasesPurchaseId,
-                        principalTable: "Purchases",
-                        principalColumn: "PurchaseId",
+                        name: "FK_ProductOrder_Orders_OrdersOrderId",
+                        column: x => x.OrdersOrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -185,9 +185,9 @@ namespace Infrastructure.Migrations
                 column: "ShoppingCartId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductPurchase_PurchasesPurchaseId",
-                table: "ProductPurchase",
-                column: "PurchasesPurchaseId");
+                name: "IX_ProductOrder_OrdersOrderId",
+                table: "ProductOrder",
+                column: "OrdersOrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -195,8 +195,8 @@ namespace Infrastructure.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Purchases_CustomerId",
-                table: "Purchases",
+                name: "IX_Orders_CustomerId",
+                table: "Orders",
                 column: "CustomerId");
         }
 
@@ -209,7 +209,7 @@ namespace Infrastructure.Migrations
                 name: "ProductInCarts");
 
             migrationBuilder.DropTable(
-                name: "ProductPurchase");
+                name: "ProductOrder");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCarts");
@@ -218,7 +218,7 @@ namespace Infrastructure.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Purchases");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Categories");
