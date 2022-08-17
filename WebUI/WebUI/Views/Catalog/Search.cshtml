@@ -1,6 +1,7 @@
 ﻿@using WebUI.Models
 @using Domain.Entities
 @model CatalogPageViewModel
+
 @{
     ViewData["Title"] = "Результаты поиска";
 }
@@ -17,6 +18,7 @@
                     <option value="name-desc">По алфавиту в обратном порядке</option>
                     <option value="price">По возрастанию цены</option>
                     <option value="price-desc">По убыванию цены</option>
+                    <option value="popularity">По количеству заказов</option>
                 </select>
                     <input type="submit" value="Сортировать">
             }
@@ -64,7 +66,7 @@
             else
             {
             <li class="page-item">
-                <a class="page-link" asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-page="@(Model.Pvm.CurrentPage-1)">Назад</a>
+                <a class="page-link" asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-sortMethod="@ViewBag.SortMethod" asp-route-page="@(Model.Pvm.CurrentPage-1)">Назад</a>
             </li>
             }
 
@@ -72,11 +74,11 @@
             {
                 if(Model.Pvm.CurrentPage == i)
                 {
-                <li class="page item"><a class="page-link active" asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-page="@i">@i</a></li>
+                <li class="page item"><a class="page-link active" asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-sortMethod="@ViewBag.SortMethod" asp-route-page="@i">@i</a></li>
                 }
                 else
                 {
-                <li class="page item"><a asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-page="@i" class="page-link">@i</a></li>
+                <li class="page item"><a asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-sortMethod="@ViewBag.SortMethod" asp-route-page="@i" class="page-link">@i</a></li>
                 }
             }
 
@@ -88,7 +90,7 @@
         else
         {
             <li class="page-item">
-                <a class="page-link" asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-page="@(Model.Pvm.CurrentPage+1)">Вперёд</a>
+                <a class="page-link" asp-action="Search" asp-route-searchString="@ViewBag.SearchString" asp-route-sortMethod="@ViewBag.SortMethod" asp-route-page="@(Model.Pvm.CurrentPage+1)">Вперёд</a>
             </li>
         }
         </ul>

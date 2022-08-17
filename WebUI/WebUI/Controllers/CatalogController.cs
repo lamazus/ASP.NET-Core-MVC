@@ -22,7 +22,7 @@ namespace WebUI.Controllers
             {
                 var guid = Guid.NewGuid();
                 HttpContext.Response.Cookies.Append("Cart", guid.ToString(), new CookieOptions { MaxAge = TimeSpan.FromDays(7)});
-                _context.ShoppingCarts.Add(new Domain.Entities.ShoppingCart { Id = guid });
+                _context.ShoppingCarts.Add(new ShoppingCart { Id = guid });
                 await _context.SaveChangesAsync();
             }
 
@@ -45,38 +45,6 @@ namespace WebUI.Controllers
             var productsPage = productsFiltered.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
             var catalogPvm = new CatalogPageViewModel(productsPage, pvm);
 
-            return View(catalogPvm);
-        }
-
-        // Поиск по слову
-        public IActionResult Search(string searchString, int page = 1, string sortMethod = "name")
-        {
-            int pageSize = 8;
-            var result = _context.Products.Where(p => p.Name.ToLower().Contains(searchString.Trim().ToLower())).ToList();
-            ViewBag.SearchString = searchString;
-            ViewBag.ResultCount = result.Count;
-            ViewBag.SortMethod = sortMethod;
-
-            var sortedProducts = new List<Product>();
-            switch (sortMethod)
-            {
-                case "name":
-                    sortedProducts = result.OrderBy(p => p.Name).ToList();
-                    break;
-                case "name-desc":
-                    sortedProducts = result.OrderByDescending(p => p.Name).ToList();
-                    break;
-                case "price":
-                    sortedProducts = result.OrderBy(p => p.Price).ToList();
-                    break;
-                case "price-desc":
-                    sortedProducts = result.OrderByDescending(p => p.Price).ToList();
-                    break;
-            }
-
-            var pvm = new PaginationViewModel(sortedProducts.Count, page, pageSize);
-            var productsPage = sortedProducts.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
-            var catalogPvm = new CatalogPageViewModel(productsPage, pvm);
             return View(catalogPvm);
         }
 
@@ -105,61 +73,40 @@ namespace WebUI.Controllers
         }
 
         // Сортировка товаров
-        public async Task<IActionResult> Sort(IEnumerable<Product> model, int categoryId, string sortMethod, int page = 1)
-        {
-            ViewBag.SelectedCategory = await _context.Categories.FirstAsync(p => p.CategoryId == categoryId);
-            ViewBag.Categories = await _context.Categories.ToListAsync();
-
-            var pageSize = 8;
-
-            var sortedProducts = new List<Product>();
-            switch (sortMethod)
-            {
-                case "name":
-                    sortedProducts = model.OrderBy(p => p.Name).ToList();
-                    break;
-                case "name-desc":
-                    sortedProducts = model.OrderByDescending(p => p.Name).ToList();
-                    break;
-                case "price":
-                    sortedProducts = model.OrderBy(p => p.Price).ToList();
-                    break;
-                case "price-desc":
-                    sortedProducts = model.OrderByDescending(p => p.Price).ToList();
-                    break;
-            }
-            var pvm = new PaginationViewModel(sortedProducts.Count, page, pageSize);
-            var productsPage = sortedProducts.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
-            var catalogPvm = new CatalogPageViewModel(productsPage, pvm);
-
-            return View("Category", catalogPvm);
-        }
          public async Task<IActionResult> Sort(int categoryId, string sortMethod, int page = 1)
          {
             ViewBag.SelectedCategory = await _context.Categories.FirstAsync(p => p.CategoryId == categoryId);
             ViewBag.Categories = await _context.Categories.ToListAsync();
 
-             var pageSize = 8;
+            
+             var products = await _context.Products.Where(p => p.CategoryId == categoryId).ToListAsync();
 
-             var productsFiltered = await _context.Products.Where(p => p.CategoryId == categoryId).ToListAsync();
-             var sortedProducts = new List<Product>();
-             switch (sortMethod) 
-             {
-                 case "name":  sortedProducts = productsFiltered.OrderBy(p => p.Name).ToList();
-                     break;
-                 case "name-desc":  sortedProducts = productsFiltered.OrderByDescending(p => p.Name).ToList();
-                     break;
-                 case "price": sortedProducts = productsFiltered.OrderBy(p => p.Price).ToList();
-                     break;
-                 case "price-desc": sortedProducts = productsFiltered.OrderByDescending(p => p.Price).ToList();
-                     break;
-             }
-             var pvm = new PaginationViewModel(sortedProducts.Count, page, pageSize);
-             var productsPage = sortedProducts.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
+            SortProducts(ref products, sortMethod);
+
+            var pageSize = 8;
+            var pvm = new PaginationViewModel(products.Count, page, pageSize);
+             var productsPage = products.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
              var catalogPvm = new CatalogPageViewModel(productsPage, pvm);
 
              return View("Category", catalogPvm);
          }
+
+        // Поиск по слову
+        public IActionResult Search(string searchString, string sortMethod, int page = 1)
+        {
+            var products = _context.Products.Where(p => p.Name.ToLower().Contains(searchString.Trim().ToLower())).ToList();
+            ViewBag.SearchString = searchString;
+            ViewBag.ResultCount = products.Count;
+            ViewBag.SortMethod = sortMethod;
+
+            SortProducts(ref products, sortMethod);
+
+            int pageSize = 8;
+            var pvm = new PaginationViewModel(products.Count, page, pageSize);
+            var productsPage = products.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
+            var catalogPvm = new CatalogPageViewModel(productsPage, pvm);
+            return View(catalogPvm);
+        }
 
         // Отфильтровать выборку
         public async Task<IActionResult> Filter (int categoryId, int minPrice, int maxPrice, string availability, string sortMethod, int page = 1)
@@ -183,41 +130,49 @@ namespace WebUI.Controllers
             ViewBag.MinPrice = _minPrice;
             ViewBag.MaxPrice = _maxPrice;
 
-           var filtered = await _context.Products.Where(p=>p.Price >= _minPrice && p.Price <= _maxPrice && p.CategoryId==categoryId).ToListAsync();
+           var products = await _context.Products.Where(p=>p.Price >= _minPrice && p.Price <= _maxPrice && p.CategoryId==categoryId).ToListAsync();
 
             if (availability == "on")
             {
-                filtered = filtered.Where(p => p.Stock > 0).ToList();
+                products = products.Where(p => p.Stock > 0).ToList();
                 ViewBag.Availability = availability;
             }
 
-            var sortedProducts = new List<Product>();
+            SortProducts(ref products, sortMethod);
 
-            switch (sortMethod)
-            {
-                case "name":
-                    sortedProducts = filtered.OrderBy(p => p.Name).ToList();
-                    break;
-                case "name-desc":
-                    sortedProducts = filtered.OrderByDescending(p => p.Name).ToList();
-                    break;
-                case "price":
-                    sortedProducts = filtered.OrderBy(p => p.Price).ToList();
-                    break;
-                case "price-desc":
-                    sortedProducts = filtered.OrderByDescending(p => p.Price).ToList();
-                    break;
-                default: sortedProducts = filtered.OrderBy(p => p.Name).ToList();
-                    break;
-            }
 
             int pageSize = 8;
-            var pvm = new PaginationViewModel(sortedProducts.Count, page, pageSize);
-            var productsPage = sortedProducts.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
+            var pvm = new PaginationViewModel(products.Count, page, pageSize);
+            var productsPage = products.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
             var catalogPvm = new CatalogPageViewModel(productsPage, pvm);
 
             return View(catalogPvm);
         }
 
+        [NonAction]
+        public void SortProducts(ref List<Product> products, string sortMethod) 
+        {
+            switch (sortMethod)
+            {
+                case "name":
+                    products = products.OrderBy(p => p.Name).ToList();
+                    break;
+                case "name-desc":
+                    products = products.OrderByDescending(p => p.Name).ToList();
+                    break;
+                case "price":
+                    products = products.OrderBy(p => p.Price).ToList();
+                    break;
+                case "price-desc":
+                    products = products.OrderByDescending(p => p.Price).ToList();
+                    break;
+                case "popularity":
+                    products = products.OrderBy(p => p.NumberOfPurchases).ToList();
+                    break;
+                default:
+                    products = products.OrderBy(p => p.Name).ToList();
+                    break;
+            }
+        }
     }
 }

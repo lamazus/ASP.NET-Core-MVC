@@ -19,6 +19,10 @@ namespace WebUI.Controllers
         {
             return View();
         }
+        public IActionResult Contacts()
+        {
+            return View();
+        }
 
 
     }

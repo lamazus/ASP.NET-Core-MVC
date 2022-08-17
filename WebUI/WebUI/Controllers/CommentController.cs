@@ -32,6 +32,7 @@ namespace WebUI.Controllers
             var referer = HttpContext.Request.Headers.Referer;
 
             return Redirect(referer);
+
         }
     }
 }
