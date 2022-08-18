@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Отследить заказ";
+}
+
+<div>
+    Для проверки состояния заказа введите его номер в форму ниже:
+
+    @using(Html.BeginForm("CheckOrder", "Tracking", FormMethod.Get))
+    {
+        <input type="text" name="orderId" placeholder="Номер заказа">
+        <input type="submit" value="Отследить заказ">
+    }
+</div>

@@ -1,0 +1,26 @@
+﻿@using Domain.Entities
+@model Order
+
+@{
+    ViewData["Title"] = "Отследить заказ";
+}
+
+<div>
+    @if(Model == null)
+    {
+        <p>Заказ с указанным номером не найден. <a asp-controller="Tracking" asp-action="Index">Назад</a></p>
+    }
+    else if(!Model.IsPaid)
+    {
+        <p>Ваш заказ еще не оплачен. Для оплаты заказа и дальнейшей обработки нажмите на кнопку 
+            <a asp-controller="Order" asp-action="Payment" asp-route-orderId="@Model.OrderId" asp-route-totalPrice="@Model.TotalPrice">Оплатить</a></p>
+    }
+    else if(!Model.IsDelivered)
+    {
+        <p>Ваш заказ оплачен и готовится к отправке.</p>
+    }
+    else if (Model.IsDelivered)
+    {
+        <p>Заказ уже вручён клиенту</p>
+    }
+</div>

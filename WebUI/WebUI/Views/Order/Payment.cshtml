@@ -5,7 +5,9 @@
 
 }
 <h3>Страница оплаты</h3>
-<div>Номер вашего заказа - @ViewBag.OrderId</div>
+<div><p>Номер вашего заказа - @ViewBag.OrderId</p>
+    <p>Итоговая сумма к оплате составляет @($"{ViewBag.TotalPrice:C}")</p>
+</div>
 
 @using(Html.BeginForm("Payment", "Order", FormMethod.Post))
 {

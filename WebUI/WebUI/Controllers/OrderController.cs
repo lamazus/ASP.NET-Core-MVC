@@ -23,11 +23,13 @@ namespace WebUI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Payment(int orderId = 0, bool isPaid = false)
+        public async Task<IActionResult> Payment(decimal totalPrice, int orderId = 0, bool isPaid = false)
         {
+            ViewBag.TotalPrice = totalPrice;
             ViewBag.OrderId = orderId;
             if (isPaid && orderId != 0)
             {
+
                 var order = await _context.Orders.FindAsync(orderId);
                 order.IsPaid = true;
                 _context.Orders.Update(order);
@@ -85,7 +87,7 @@ namespace WebUI.Controllers
 
             }
 
-            return RedirectToAction("Payment", new { orderId = order.OrderId});
+            return RedirectToAction("Payment", new { orderId = order.OrderId, totalPrice = order.TotalPrice});
 
         }
 
