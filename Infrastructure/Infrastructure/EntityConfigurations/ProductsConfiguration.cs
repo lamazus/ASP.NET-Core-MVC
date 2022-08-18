@@ -10,8 +10,7 @@ namespace Infrastructure.EntityConfigurations
         {
             builder.HasMany(p => p.Comments)
                 .WithOne(p => p.Product);
-            builder.HasMany(p => p.Orders)
-                .WithMany(p => p.Products);
+
 
             builder.Property(p => p.Name).IsRequired().HasMaxLength(50);
             builder.Property(p => p.Price).IsRequired().HasColumnType("money");

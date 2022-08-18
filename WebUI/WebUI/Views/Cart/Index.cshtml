@@ -34,4 +34,6 @@ else
         </tbody>
     </table>
     <h3>Итого: @($"{Model.ComputePrice():C}")</h3>
+    <a asp-controller="Cart" asp-action="ClearCart" asp-route-cart="@Model.ProductsInCarts">Очистить корзину</a>
+    <a asp-controller="Order" asp-action="Index">>Оформить заказ</a>
 }

@@ -8,8 +8,10 @@ namespace Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<ProductInCart> builder)
         {
+            builder.HasOne(p => p.ShoppingCart)
+                .WithMany(p => p.ProductInCarts).OnDelete(DeleteBehavior.SetNull);
+
             builder.Property(p => p.ProductId).IsRequired();
-            builder.Property(p => p.ShoppingCartId).IsRequired();
         }
 
     }

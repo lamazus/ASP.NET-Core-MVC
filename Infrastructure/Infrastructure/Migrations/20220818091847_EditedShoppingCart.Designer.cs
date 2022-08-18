@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BeautyShopDbContext))]
-    partial class BeautyShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220818091847_EditedShoppingCart")]
+    partial class EditedShoppingCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,10 +121,8 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Commentary")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
@@ -132,10 +132,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DeliveryTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDelivered")
                         .ValueGeneratedOnAdd()
@@ -227,7 +223,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ShoppingCartId")
+                    b.Property<Guid>("ShoppingCartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -307,7 +303,8 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.ShoppingCart", "ShoppingCart")
                         .WithMany("ProductInCarts")
                         .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
 

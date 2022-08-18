@@ -1,0 +1,16 @@
+﻿@using WebUI.Models;
+
+@{
+    ViewData["Title"] = "Оплата";
+
+}
+<h3>Страница оплаты</h3>
+<div>Номер вашего заказа - @ViewBag.OrderId</div>
+
+@using(Html.BeginForm("Payment", "Order", FormMethod.Post))
+{
+    <input type="text" name="orderId" value="@ViewBag.OrderId" hidden />
+    <input type="text" name="isPaid" value="true" hidden />
+    <input type="submit" value="Оплатить">
+    
+}

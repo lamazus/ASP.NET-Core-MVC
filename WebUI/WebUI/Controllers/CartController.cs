@@ -25,6 +25,11 @@ namespace WebUI.Controllers
                 var cart = _context.ShoppingCarts.Include(p => p.ProductInCarts).ThenInclude(p => p.Product).SingleOrDefault(p=>p.Id == guid);
                 if(cart != null)
                     cartVm.ProductsInCarts = cart.ProductInCarts;
+                if(cart == null)
+                {
+                    _context.ShoppingCarts.Add(new ShoppingCart { Id = guid });
+                    _context.SaveChanges();
+                }
 
             }
             else
@@ -112,5 +117,16 @@ namespace WebUI.Controllers
 
             return RedirectToAction("Index", "Cart");
         }
+
+        public IActionResult ClearCart()
+        {
+            var guid = Guid.Parse(HttpContext.Request.Cookies["Cart"]!);
+            var cart = _context.ShoppingCarts.Find(guid);
+            _context.ShoppingCarts.Remove(cart);
+            _context.SaveChanges();
+            
+            return RedirectToAction("Index");
+        }
+        
     }
 }

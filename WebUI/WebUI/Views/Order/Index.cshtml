@@ -1,0 +1,35 @@
+﻿<h3>Форма оформления заказа</h3>
+@using(Html.BeginForm("AddOrder", "Order", FormMethod.Post))
+{   
+    <div class="border">
+        
+        <p><label>Ваше имя</label><br />
+        <input name="name" type="text" pattern="[A-Za-zА-Яа-яЁё]*" placeholder="Имя"required></p>
+    
+        <p><label>Контактный номер телефона</label><br />
+        <input name="telephoneNumber" type="tel" pattern="[7][0-9]*" placeholder="7XXXXXXXXXX" maxlength="11" required></p>
+
+        <p><label>Email</label><br />
+        <input name="email" type="email" placeholder="Пример: beauty@mail.ru" required></p>
+
+        <p><label>Адрес доставки</label><br />
+        <label>Город</label><br />
+        <input name="city" type="text" placeholder="Город" required><br />
+        <label>Улица, дом, квартира</label><br />
+        <input name="address" type="text" placeholder="Улица, дом, квартира" required></p>
+
+        <p><label>Коментарий к заказу</label><br />
+        <textarea name="commentary" pattern="[A-Za-zА-Яа-яЁё,.!?]*" maxlenght="255" placeholder="Ваш комментарий (макс. 255 символов)"></textarea></p>
+
+        <p><label>Желаямая дата доставки</label><br />
+        <input name="deliveryDate" type="date" min="@DateTime.Now.AddDays(3).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")" required ></p>
+
+        <p><label>Желаемый временной промежуток</label><br />
+            <input name="deliveryTime" type="radio" value="9:00 - 12:00" > 9:00 - 12:00<br />
+            <input name="deliveryTime" type="radio" value="12:00 - 17:00"> 12:00 - 17:00<br />
+            <input name="deliveryTime" type="radio" value="17:00 - 21:00" required"> 17:00 - 21:00</p>
+            
+        <input type="submit" value="Перейти к оплате"/>
+    </div>
+    
+}

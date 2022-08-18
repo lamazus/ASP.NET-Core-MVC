@@ -9,7 +9,9 @@ namespace Infrastructure.EntityConfigurations
         public void Configure(EntityTypeBuilder<ShoppingCart> builder)
         {
             builder.HasMany(p => p.ProductInCarts)
-                .WithOne(p => p.ShoppingCart);
+                .WithOne(p => p.ShoppingCart).OnDelete(DeleteBehavior.SetNull);
+
+
         }
     }
 }
