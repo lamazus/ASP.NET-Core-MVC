@@ -26,10 +26,11 @@
         <!--Конец навигации-->
         <!--Фильтрация вывода-->
         <div>
-        <form asp-controller="Catalog" asp-action="Filter" method="get">
-            <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
-            @await Html.PartialAsync("_FiltersForForm")
-        </form>
+            @using(Html.BeginForm("Filter", "Catalog", FormMethod.Get))
+            {
+                <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
+                @await Html.PartialAsync("_FiltersForForm")
+            }
         </div>
         <!--Конец фильтрации-->
     </div>
@@ -37,7 +38,8 @@
 
         <div class="container-flex text-center col-9">
             <!--Сортировка-->
-            <form asp-controller="Catalog" asp-action="Filter" method="get">
+             @using(Html.BeginForm("Filter", "Catalog", FormMethod.Get))
+            {
                 <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
                 <input type="text" name="minPrice" value="@ViewBag.MinPrice" hidden/>
                 <input type="text" name="maxPrice" value="@ViewBag.MaxPrice" hidden/>
@@ -45,7 +47,7 @@
                 <label>Способ сортировки</label>
                     @await Html.PartialAsync("_SortMethodsInForm");
                     <input type="submit" value="Сортировать">
-            </form>
+            }
             <!--Конец сортировки-->
         
     <!--Список карточек товаров-->
