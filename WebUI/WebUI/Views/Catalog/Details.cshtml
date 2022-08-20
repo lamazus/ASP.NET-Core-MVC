@@ -34,12 +34,12 @@
                 {
                     <span>Нет в наличии.</span>
                 }</li>
-            <li>@using (Html.BeginForm("Add", "Cart", FormMethod.Post))
-                        {
-                            <input type="number" name="id" value="@Model.Id" hidden>
-                            <input type="number" name="amount" min="1", max="100" size="5" step="1" value="1">
-                            <input type="submit" value="В корзину" class="btn btn-primary btn-sm rounded-bottom">
-                        }</li>
+            <li><form asp-controller="Cart" asp-action="Add" method="post">
+                <input type="number" name="id" value="@Model.Id" hidden>
+                <input type="number" name="amount" min="1", max="100" size="5" step="1" value="1">
+                <input type="submit" value="В корзину" class="btn btn-primary btn-sm rounded-bottom">
+                </form>
+            </li>
         </ul>
     </div>
 
@@ -57,8 +57,7 @@
 
     <div>
         <h6>Оставить отзыв</h6>
-        @using (Html.BeginForm("AddComment", "Comment", FormMethod.Get))
-        {
+        <form asp-controller="Comment" asp-action="AddComment" method="get">
             <input name="id" type="number" value="@Model.Id" hidden />
             <p><input name="name" type="text" placeholder="Ваше имя" required /></p>
             <p><textarea name="text" maxlength="255" placeholder="Ваш текст(макс. 255 символов)" cols="50" rows="5" required></textarea></p>
@@ -68,7 +67,7 @@
             <input name="rating" type="radio" value="3">3
             <input name="rating" type="radio" value="4">4
             <input name="rating" type="radio" value="5" checked>5</p>
-           <input type="submit" value="Оставить отзыв" />
-        }
+            <input type="submit" value="Оставить отзыв" />
+        </form>
     </div>
 </div>

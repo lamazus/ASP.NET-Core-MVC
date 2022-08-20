@@ -1,0 +1,11 @@
+﻿@using Domain.Entities;
+@model Category
+
+<form asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-antiforgery="true" method="post"> 
+    <label>Id</label>
+    <input name="categoryId" type="text" value="@Model.CategoryId" hidden>
+    <input name="categoryId" type="text" value="@Model.CategoryId" disabled>
+    <label>Название категории</label>
+    <input name="name" type="text" value="@Model.Name">
+    <input type="submit" value="Сохранить">
+</form>

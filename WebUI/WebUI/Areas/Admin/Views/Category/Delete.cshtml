@@ -1,0 +1,10 @@
+﻿@using Domain.Entities
+@model Category
+
+<p>Вы действительно хотите удалить @Model.CategoryId - @Model.Name ?<br />
+    <form asp-action="Delete">
+        <input asp-for="CategoryId" name="categoryId" value="@Model.CategoryId" hidden />
+        <input name="confirm" type="submit" value="Да">
+        <input name="confirm" type="submit" value="Нет" />
+    </form>
+</p>

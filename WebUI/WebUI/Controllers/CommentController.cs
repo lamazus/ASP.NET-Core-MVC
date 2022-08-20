@@ -11,6 +11,7 @@ namespace WebUI.Controllers
         {
             _context = context;
         }
+        [HttpPost]
         public async Task<IActionResult> AddComment(int id, string name, int rating, string text)
         {
             var prod = await _context.Products.FindAsync(id);

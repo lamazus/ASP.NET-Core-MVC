@@ -1,0 +1,20 @@
+﻿@using WebUI.Areas.Admin.Models
+@model CategoryWithProductsVm
+
+<h2>@Model.Category.CategoryId - @Model.Category.Name</h2>
+
+<p>Список товаров данной категории</p>
+@if(Model.Products.Count() == 0)
+{
+    <p>Список пуст</p>
+}
+else
+{
+    <ol>
+        @foreach(var prod in Model.Products)
+        {
+            <li><a asp-controller="Product" asp-action="Details" asp-route-categoryId=@prod.ProductId>@prod.Name</a></li>
+        }
+    </ol>
+}
+<a href="@ViewData["referer"]">Назад</a>

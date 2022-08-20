@@ -1,6 +1,5 @@
 ﻿<h3>Форма оформления заказа</h3>
-@using(Html.BeginForm("AddOrder", "Order", FormMethod.Post))
-{   
+<form asp-controller="Order" asp-action="AddOrder" method="Post">
     <div class="border">
         
         <p><label>Ваше имя</label><br />
@@ -31,5 +30,4 @@
             
         <input type="submit" value="Перейти к оплате"/>
     </div>
-    
-}
+</form>

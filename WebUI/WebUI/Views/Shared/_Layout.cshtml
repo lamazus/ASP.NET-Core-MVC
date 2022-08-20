@@ -22,10 +22,10 @@
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                       @using(Html.BeginForm("Search", "Catalog", FormMethod.Get)){
-                          <input type="text" name="searchString" required/>;
-                         <input type="submit" value="&#128269;Поиск" class="btn btn-primary btn-sm rounded-bottom" />
-                        }
+                        <form asp-controller="Catalog" asp-action="Search">
+                            <input type="text" name="searchString" required/>;
+                            <input type="submit" value="&#128269;Поиск" class="btn btn-primary btn-sm rounded-bottom" />
+                        </form>
                     </li>
                 </ul>
             </div>

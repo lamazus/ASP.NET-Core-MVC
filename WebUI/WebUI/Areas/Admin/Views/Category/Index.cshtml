@@ -1,0 +1,25 @@
+﻿@using Domain.Entities
+@model IEnumerable<Category>
+
+    <h3>Список категорий</h3>
+<table>
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Название</td>
+        </tr>
+    </thead>
+    <tdbody>
+    @foreach(var cat in Model)
+    {
+        <tr>
+            <td>@cat.CategoryId</td>
+            <td><a asp-controller="Category" asp-action="Details" asp-route-categoryId="@cat.CategoryId">@cat.Name</a></td>
+            <td><a asp-action="Edit" asp-route-categoryId="@cat.CategoryId">Редактировать</a></td>
+            <td><a asp-action="Delete" asp-route-categoryId="@cat.CategoryId">Удалить</a></td>
+           
+        </tr>
+    }
+    </tdbody>
+</table>
+<a asp-action="Create">Создать категорию</a>

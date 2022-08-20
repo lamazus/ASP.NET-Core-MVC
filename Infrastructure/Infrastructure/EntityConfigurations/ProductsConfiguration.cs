@@ -11,7 +11,6 @@ namespace Infrastructure.EntityConfigurations
             builder.HasMany(p => p.Comments)
                 .WithOne(p => p.Product);
 
-
             builder.Property(p => p.Name).IsRequired().HasMaxLength(50);
             builder.Property(p => p.Price).IsRequired().HasColumnType("money");
             builder.Property(p => p.Stock).IsRequired().HasDefaultValue(0);

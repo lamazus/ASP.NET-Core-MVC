@@ -25,12 +25,10 @@
         <!--Конец навигации-->
         <!--Фильтрация вывода-->
         <div>
-            @using(Html.BeginForm("Filter", "Catalog", FormMethod.Get))
-            {
+            <form asp-controller="Catalog" asp-action="Filter" method="get">
                 <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
                 @await Html.PartialAsync("_FiltersForForm")
-
-            }
+            </form>
         </div>
         <!--Конец фильтрации-->
     </div>
@@ -60,12 +58,11 @@
                         @if (@prod.Stock > 0)
                         {
                             <span style="font-size: small"> Доступно @prod.Stock шт.</span>
-                            using (Html.BeginForm("Add", "Cart", FormMethod.Post))
-                            {
+                            <form asp-controller="Cart" asp-action="Add" method="post">
                                 <input type="number" name="id" value="@prod.ProductId" hidden>
                                 <input type="number" name="amount" min="1", max="100" size="5" step="1" value="1">
                                 <input type="submit" value="В корзину" class="btn btn-primary btn-sm rounded-bottom">
-                            }
+                            </form>
                         }
                         else
                         {

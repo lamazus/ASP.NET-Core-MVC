@@ -5,9 +5,10 @@
 <div>
     Для проверки состояния заказа введите его номер в форму ниже:
 
-    @using(Html.BeginForm("CheckOrder", "Tracking", FormMethod.Get))
-    {
+
+    <form asp-controller="Tracking" asp-action="CheckOrder" method="get">
         <input type="text" name="orderId" placeholder="Номер заказа">
         <input type="submit" value="Отследить заказ">
-    }
+    </form>
+  
 </div>

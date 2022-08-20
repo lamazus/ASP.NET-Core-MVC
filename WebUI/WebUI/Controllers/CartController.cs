@@ -44,7 +44,7 @@ namespace WebUI.Controllers
             }
             return View(cartVm);
         }
-
+        [HttpPost]
         public IActionResult Add(int id, int amount)
         {
             var prod = _context.Products.Find(id);
@@ -72,7 +72,7 @@ namespace WebUI.Controllers
             var s = HttpContext.Request.Headers.Referer.ToString();
             return Redirect(s);
         }
-
+        [HttpPost]
         public IActionResult Delete(int id)
         {
             var guid = Guid.Parse(HttpContext.Request.Cookies["Cart"]!);
@@ -104,6 +104,7 @@ namespace WebUI.Controllers
 
             return View(editAmountVm);
         }
+        [HttpPost]
         public IActionResult EditAmount(int id, int amount)
         {
             var guid = Guid.Parse(HttpContext.Request.Cookies["Cart"]!);
@@ -117,7 +118,7 @@ namespace WebUI.Controllers
 
             return RedirectToAction("Index", "Cart");
         }
-
+        [HttpPost]
         public IActionResult ClearCart()
         {
             var guid = Guid.Parse(HttpContext.Request.Cookies["Cart"]!);

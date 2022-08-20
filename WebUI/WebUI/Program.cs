@@ -25,9 +25,11 @@ app.UseStaticFiles();
 app.UseMvc();
 app.UseAuthentication();;
 
-app.MapControllerRoute(
-    name: "catalog",
-    pattern: "{controller=Catalog}/{action}/{id?}");
+app.MapAreaControllerRoute(
+    name: "admin_area",
+    areaName: "Admin",
+    pattern: "manage/{controller=Home}/{action=Index}/{id?}"
+    );
 
 app.MapControllerRoute(
        name: "default",

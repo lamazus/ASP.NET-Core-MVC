@@ -41,6 +41,7 @@ namespace WebUI.Controllers
 
             return View();
         }
+        [HttpPost]
         public async Task<IActionResult> AddOrder(string name, string telephoneNumber, string email, string city,
             string address, string commentary, DateTime deliveryDate, string deliveryTime)
         {
