@@ -1,0 +1,40 @@
+﻿@using Domain.Entities
+@model IEnumerable<Order>
+
+<h3>Список заказов</h3>
+
+<table>
+    <thead>
+        <tr>
+            <td>Номер заказа</td>
+            <td>Покупатель</td>
+            <td>Дата заказа</td>
+            <td>Дата доставки</td>
+            <td>Интервал доставка</td>
+            <td>Комментарий к заказу</td>
+            <td>Оплачен</td>
+            <td>Доставлен</td>
+            <td>Количество товаров</td>
+            <td>Сумма к оплате</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td><a asp-controller="Customer" asp-action="Details" asp-route-customerId="@order.Customer.CustomerId">@order.Customer.Email</a></td>
+                <td>@order.DateOfOrder</td>
+                <td>@order.DeliveryDate.Date</td>
+                <td>@order.DeliveryTime</td>
+                <td>@order.Commentary</td>
+                <td>@order.IsPaid</td>
+                <td>@order.IsDelivered</td>
+                <td>@order.Products.Count</td>
+                <td>@($"{order.TotalPrice:C}")</td>
+                <td><a asp-action="Details" asp-route-orderId="@order.OrderId">Подробнее</a></td>
+                <td><a asp-action="Edit" asp-route-orderId="@order.OrderId">Редактировать</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

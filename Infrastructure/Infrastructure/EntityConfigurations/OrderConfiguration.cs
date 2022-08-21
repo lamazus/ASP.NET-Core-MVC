@@ -9,8 +9,7 @@ namespace Infrastructure.EntityConfigurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.HasOne(p => p.Customer)
-                .WithMany(p => p.Orders);
-
+                .WithMany(p => p.Orders).OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(p => p.TotalPrice).IsRequired().HasColumnType("money");
             builder.Property(p => p.DateOfOrder).IsRequired();

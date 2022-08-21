@@ -2,7 +2,7 @@
 
 namespace WebUI.Models
 {
-    public class CatalogProductDetailsViewModel
+    public class CatalogProductDetailsVm
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

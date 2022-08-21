@@ -1,0 +1,45 @@
+﻿@model Domain.Entities.Product
+
+<h3>@Model.Name ID:@Model.ProductId</h3>
+
+<img src="/images//products/@Model.ImageName" /><br />
+
+<b>Категория</b><br />
+@Model.Category.Name<br />
+
+<b>Стоимость</b><br />
+@($"{Model.Price:C}")<br />
+
+<b>Остаток на складе</b><br />
+@Model.Stock<br />
+
+<b>Количество покупок</b><br />
+@Model.NumberOfOrders<br />
+
+<b>Описание</b><br />
+@Model.Description<br />
+
+<h4>Отзывы</h4>
+<table>
+    <thead>
+        <tr>
+            <td>Оценка</td>
+            <td>Имя пользователя</td>
+            <td>Текст</td>
+            <td>Дата написания</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var com in Model.Comments)
+        {
+            <tr>
+                <td>@com.Rating</td>
+                <td>@com.Username</td>
+                <td>@com.Text</td>
+                <td>@com.CreatedAt</td>
+                <td><a asp-controller="Comment" asp-action="Delete" asp-route-id="@com.CommentId">Удалить</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@ViewData["referer"]">Назад</a>

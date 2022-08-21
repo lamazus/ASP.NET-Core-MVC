@@ -1,7 +1,7 @@
 ﻿
 namespace WebUI.Models
 {
-    public class CartEditAmountViewModel
+    public class CartEditAmountVm
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

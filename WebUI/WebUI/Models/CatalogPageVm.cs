@@ -2,11 +2,11 @@
 
 namespace WebUI.Models
 {
-    public class CatalogPageViewModel
+    public class CatalogPageVm
     {
         public IEnumerable<Product> Products { get; set; }
-        public PaginationViewModel Pvm { get; set; }
-        public CatalogPageViewModel(IEnumerable<Product> products, PaginationViewModel pvm)
+        public PaginationVm Pvm { get; set; }
+        public CatalogPageVm(IEnumerable<Product> products, PaginationVm pvm)
         {
             Products = products;
             Pvm = pvm;

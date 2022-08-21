@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Domain.Entities.Product>
+
+<h3>Список товаров</h3>
+<table>
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Категория</td>
+            <td>Название</td>
+            <td>Цена</td>
+            <td>Количество покупок</td>
+            <td>Осталось на складе</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var prod in Model)
+        {
+            <tr>
+                <td>@prod.ProductId</td>
+                <td>@prod.Category.Name</td>
+                <td>@prod.Name</td>
+                <td>@prod.Price</td>
+                <td>@prod.NumberOfOrders</td>
+                <td>@prod.Stock</td>
+                <td><a asp-action="Details" asp-route-id="@prod.ProductId">Подробнее</a></td>
+
+            </tr>
+        }
+    </tbody>
+</table>

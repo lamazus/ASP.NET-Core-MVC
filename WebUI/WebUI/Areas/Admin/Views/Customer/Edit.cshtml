@@ -1,0 +1,12 @@
+﻿@using WebUI.Areas.Admin.Models
+@model CustomerVm
+
+<form asp-action="Edit" asp-route-customerId="@Model.CustomerId" method="post">
+    <input asp-for="Name" />
+    <input asp-for="Email" />
+    <input asp-for="TelephoneNumber" />
+    <input asp-for="City"/>
+    <input asp-for="Address" />
+    <input type="submit" value="Сохранить" />
+
+</form>

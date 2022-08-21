@@ -12,6 +12,5 @@
         public int NumberOfOrders { get; set; }
         public string ImageName { get; set; } = string.Empty;
         public List<Comment> Comments { get; set; } = new List<Comment>();
-        public List<Order> Orders { get; set; } = new List<Order>();
     }
 }

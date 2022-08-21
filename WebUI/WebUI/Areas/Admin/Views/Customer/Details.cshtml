@@ -1,0 +1,31 @@
+﻿@using WebUI.Areas.Admin.Models
+@model CustomerVm
+
+<h3>Подробная информация о покупателе</h3>
+<div>
+    <b>Имя</b><br />
+    @Model.Name<br />
+
+    <b>Адрес электронной почты</b><br />
+    @Model.Email<br />
+
+    <b>Контактный номер телефона</b><br />
+    @Model.TelephoneNumber<br />
+
+    <b>Город</b><br />
+    @Model.City<br />
+
+    <b>Адрес доставки</b><br />
+    @Model.Address<br />
+
+    <h4>Заказы</h4>
+    <ol>
+        @foreach(var order in Model.Orders)
+        {
+            <li>
+                <a asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId">@order.OrderId</a>
+            </li>
+        }
+    </ol>
+<a href="@ViewData["referer"]">Назад</a>
+</div>

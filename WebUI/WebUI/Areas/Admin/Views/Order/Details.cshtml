@@ -1,0 +1,57 @@
+﻿@using WebUI.Areas.Admin.Models
+@model OrderDetailVm
+
+<div>
+    <h3>Заказ номер @Model.OrderId</h3>
+    
+    <h4>Информация о покупателе</h4>
+    <b>Имя</b><br />
+    <a asp-controller="Customer" asp-action="Details" asp-route-customerId="@Model.Customer.CustomerId">@Model.Customer.Name</a><br />
+    <b>Адрес электронной почты</b><br />
+    @Model.Customer.Email<br />
+    <b>Контактный номер телефона</b><br />
+    @Model.Customer.TelephoneNumber<br />
+    <b>Город</b><br />
+    @Model.Customer.City<br />
+    <b>Адрес доставки</b><br />
+    @Model.Customer.Address<br />
+
+    <h4>Информация о заказе</h4>
+    <b>Дата заказа</b><br />
+    @Model.DateOfOrder<br />
+    <b>Дата доставки</b><br />
+    @Model.DeliveryDate @Model.DeliveryTime<br />
+    <b>Оплачен</b><br />
+    @(Model.IsPaid ? "Да" : "Нет")<br/>
+    <b>Доставлен</b><br />
+    @(Model.IsDelivered ? "Да" : "Нет")<br/>
+    <b>Итоговая стоимость</b><br />
+    @($"{Model.TotalPrice:C}")<br />
+    <b>Комментарий к заказу</b><br />
+    @Model.Commentary<br />
+
+    <h4>Список товаров в заказе</h4>
+    <table>
+        <thead>
+            <tr>
+                <td>Название</td>
+                <td>Цена за шутку</td>
+                <td>Количество</td>
+                <td>Цена</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var prod in Model.Products)
+            {
+                <tr>
+                    <td><a asp-controller="Product" asp-action="Details" asp-route-id="@prod.ProductId">@prod.Product.Name</a></td>
+                    <td>@($"{prod.Product.Price:C}")</td>
+                    <td>@prod.Amount</td>
+                    <td>@($"{(prod.Amount * prod.Product.Price):C}")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <a href="@ViewData["referer"]">Назад</a>
+</div>

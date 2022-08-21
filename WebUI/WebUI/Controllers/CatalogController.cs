@@ -41,7 +41,7 @@ namespace WebUI.Controllers
 
             var productsFiltered = await _context.Products.Where(p => p.CategoryId == id).ToListAsync();
 
-            AddPagination(productsFiltered, 8, page, out CatalogPageViewModel catalogPvm);
+            AddPagination(productsFiltered, 8, page, out CatalogPageVm catalogPvm);
 
             return View(catalogPvm);
         }
@@ -51,7 +51,7 @@ namespace WebUI.Controllers
         {
             var products = _context.Products.Include(p=>p.Comments).Include(p=>p.Category).FirstOrDefault(p=>p.ProductId == id);
             var product = _context.Products.Find(id);
-            var productVm = new CatalogProductDetailsViewModel();
+            var productVm = new CatalogProductDetailsVm();
 
             if(product != null)
             {
@@ -79,7 +79,7 @@ namespace WebUI.Controllers
              var products = await _context.Products.Where(p => p.CategoryId == categoryId).ToListAsync();
 
             SortProducts(ref products, sortMethod);
-            AddPagination(products, 8, page, out CatalogPageViewModel catalogPvm);
+            AddPagination(products, 8, page, out CatalogPageVm catalogPvm);
 
             return View("Category", catalogPvm);
          }
@@ -93,7 +93,7 @@ namespace WebUI.Controllers
             ViewBag.SortMethod = sortMethod;
 
             SortProducts(ref products, sortMethod);
-            AddPagination(products, 8, page, out CatalogPageViewModel catalogPvm);
+            AddPagination(products, 8, page, out CatalogPageVm catalogPvm);
 
             return View(catalogPvm);
         }
@@ -129,7 +129,7 @@ namespace WebUI.Controllers
             }
 
             SortProducts(ref products, sortMethod);
-            AddPagination(products, 8, page, out CatalogPageViewModel catalogPvm);
+            AddPagination(products, 8, page, out CatalogPageVm catalogPvm);
 
             return View(catalogPvm);
         }
@@ -161,11 +161,11 @@ namespace WebUI.Controllers
         }
 
         [NonAction]
-        public static void AddPagination(List<Product> products, int pageSize, int page, out CatalogPageViewModel catalogPvm)
+        public static void AddPagination(List<Product> products, int pageSize, int page, out CatalogPageVm catalogPvm)
         {
-            var pvm = new PaginationViewModel(products.Count, page, pageSize);
+            var pvm = new PaginationVm(products.Count, page, pageSize);
             var productsPage = products.Skip(pageSize * (pvm.CurrentPage - 1)).Take(pageSize);
-            catalogPvm = new CatalogPageViewModel(productsPage, pvm);
+            catalogPvm = new CatalogPageVm(productsPage, pvm);
         }
     }
 }

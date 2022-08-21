@@ -48,48 +48,84 @@ namespace WebUI.Controllers
             var guid = Guid.Parse(HttpContext.Request.Cookies["Cart"]!);
             var cart = await _context.ShoppingCarts.Include(p=>p.ProductInCarts).ThenInclude(p=>p.Product).FirstOrDefaultAsync(p=>p.Id == guid);
 
-            var customer = new Customer
+            if (_context.Customers.Any(p=>p.Email == email))
             {
-                CustomerId = Guid.NewGuid(),
-                Name = name,
-                Email = email,
-                TelephoneNumber = telephoneNumber,
-                City = city,
-                Address = address
-            };
+                var existedCustomer = await _context.Customers.FirstOrDefaultAsync(p=>p.Email == email);
 
-            var order = new Order
+                var order = new Order
+                {
+                    CustomerId = existedCustomer.CustomerId,
+                    Commentary = commentary,
+                    DateOfOrder = DateTime.Now,
+                    Products = cart.ProductInCarts,
+                    TotalPrice = ComputePrice(cart.ProductInCarts),
+                    DeliveryDate = deliveryDate,
+                    DeliveryTime = deliveryTime
+
+                };
+                existedCustomer.Orders.Add(order);
+                _context.Customers.Update(existedCustomer);
+                _context.Orders.Add(order);
+                _context.SaveChanges();
+                await _context.SaveChangesAsync();
+
+                foreach (var prod in cart.ProductInCarts)
+                {
+                    var productInDb = await _context.Products.FindAsync(prod.ProductId);
+
+                    productInDb.NumberOfOrders += prod.Amount;
+                    if (productInDb.Stock >= prod.Amount)
+                        productInDb.Stock -= prod.Amount;
+                    _context.Products.Update(productInDb);
+                    _context.SaveChanges();
+
+                }
+
+                return RedirectToAction("Payment", new { orderId = order.OrderId, totalPrice = order.TotalPrice });
+            }
+            else
             {
-                CustomerId = customer.CustomerId,
-                Commentary = commentary,
-                DateOfOrder = DateTime.Now,
-                Products = cart.ProductInCarts,
-                TotalPrice = ComputePrice(cart.ProductInCarts),
-                DeliveryDate = deliveryDate,
-                DeliveryTime = deliveryTime
+                var customer = new Customer
+                {
+                    CustomerId = Guid.NewGuid(),
+                    Name = name,
+                    Email = email,
+                    TelephoneNumber = telephoneNumber,
+                    City = city,
+                    Address = address
+                };
 
-            };
-             _context.Customers.Add(customer);
-            _context.SaveChanges();
+                var order = new Order
+                {
+                    CustomerId = customer.CustomerId,
+                    Commentary = commentary,
+                    DateOfOrder = DateTime.Now,
+                    Products = cart.ProductInCarts,
+                    TotalPrice = ComputePrice(cart.ProductInCarts),
+                    DeliveryDate = deliveryDate,
+                    DeliveryTime = deliveryTime
 
-            _context.Orders.Add(order);
-            _context.SaveChanges();
+                };
 
-
-            foreach (var prod in cart.ProductInCarts)
-            {
-                var productInDb = await _context.Products.FindAsync(prod.ProductId);
-
-                productInDb.NumberOfOrders += prod.Amount;
-                if(productInDb.Stock >= prod.Amount)
-                    productInDb.Stock -= prod.Amount;
-                _context.Products.Update(productInDb);
+                _context.Customers.Add(customer);
+                _context.Orders.Add(order);
                 _context.SaveChanges();
 
+
+                foreach (var prod in cart.ProductInCarts)
+                {
+                    var productInDb = await _context.Products.FindAsync(prod.ProductId);
+
+                    productInDb.NumberOfOrders += prod.Amount;
+                    if (productInDb.Stock >= prod.Amount)
+                        productInDb.Stock -= prod.Amount;
+                    _context.Products.Update(productInDb);
+                    _context.SaveChanges();
+
+                }
+
+                return RedirectToAction("Payment", new { orderId = order.OrderId, totalPrice = order.TotalPrice });
             }
-
-            return RedirectToAction("Payment", new { orderId = order.OrderId, totalPrice = order.TotalPrice});
-
         }
 
         [NonAction]

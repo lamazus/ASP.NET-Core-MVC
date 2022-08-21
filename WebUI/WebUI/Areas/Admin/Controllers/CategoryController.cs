@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using WebUI.Areas.Admin.Models;

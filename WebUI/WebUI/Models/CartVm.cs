@@ -2,7 +2,7 @@
 
 namespace WebUI.Models
 {
-    public class CartViewModel
+    public class CartVm
     {
         public IEnumerable<ProductInCart>? ProductsInCarts { get; set; }
         public decimal ComputePrice()

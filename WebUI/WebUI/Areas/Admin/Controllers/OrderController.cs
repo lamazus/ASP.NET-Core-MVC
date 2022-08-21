@@ -1,84 +1,83 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Domain.Entities;
+using Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using WebUI.Areas.Admin.Models;
 
 namespace WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class OrderController : Controller
     {
-        // GET: OrderController
-        public ActionResult Index()
+        private readonly BeautyShopDbContext _context;
+        public OrderController(BeautyShopDbContext context)
         {
-            return View();
+            _context = context;
+        }
+        // GET: OrderController
+        public async Task<ActionResult> Index()
+        {
+            var orders = await _context.Orders.Include(p => p.Products).Include(p => p.Customer).ToListAsync();
+
+            return View(orders);
         }
 
         // GET: OrderController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int orderId)
         {
-            return View();
-        }
+            var order = await _context.Orders.Include(p => p.Products).ThenInclude(p=>p.Product).Include(p => p.Customer).FirstOrDefaultAsync(p => p.OrderId == orderId);
 
-        // GET: OrderController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+            var orderVm = new OrderDetailVm
+            {
+                OrderId = order.OrderId,
+                Customer = order.Customer,
+                DateOfOrder = order.DateOfOrder,
+                DeliveryDate = order.DeliveryDate,
+                DeliveryTime = order.DeliveryTime,
+                Products = order.Products,
+                TotalPrice = order.TotalPrice,
+                IsDelivered = order.IsDelivered,
+                IsPaid = order.IsPaid,
+                Commentary = order.Commentary
+            };
 
-        // POST: OrderController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            ViewData["referer"] = HttpContext.Request.Headers.Referer;
+            return View(orderVm);
         }
 
         // GET: OrderController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int orderId)
         {
-            return View();
+            var order = await _context.Orders.Include(p=>p.Customer).Include(p=>p.Products).FirstOrDefaultAsync(p=>p.OrderId == orderId);
+
+            var orderVm = new OrderDetailVm
+            {
+                OrderId = order.OrderId,
+                Customer = order.Customer,
+                DateOfOrder = order.DateOfOrder,
+                DeliveryDate = order.DeliveryDate,
+                DeliveryTime = order.DeliveryTime,
+                Products = order.Products,
+                TotalPrice = order.TotalPrice,
+                IsDelivered = order.IsDelivered,
+                IsPaid = order.IsPaid,
+                Commentary = order.Commentary
+            };
+
+            return View(orderVm);
         }
 
         // POST: OrderController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int orderId, IFormCollection form)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            var order = await _context.Orders.FindAsync(orderId);
+            order.DeliveryDate = DateTime.Parse(form["DeliveryDate"]);
+            order.DeliveryTime = form["DeliveryTime"];
+            order.Commentary = form["Commentary"];
 
-        // GET: OrderController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: OrderController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Details", new { orderId = orderId });
         }
     }
 }

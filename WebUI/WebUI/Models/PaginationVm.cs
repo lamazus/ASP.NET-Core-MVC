@@ -1,11 +1,11 @@
 ﻿
 namespace WebUI.Models
 {
-    public class PaginationViewModel
+    public class PaginationVm
     {
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
-        public PaginationViewModel(int TotalElements, int currentPage, int pageSize)
+        public PaginationVm(int TotalElements, int currentPage, int pageSize)
         {
             CurrentPage = currentPage;
             TotalPages = (int)Math.Ceiling(TotalElements / (double)pageSize);

@@ -17,7 +17,7 @@ namespace WebUI.Controllers
         {
             ViewData["Title"] = "Корзина покупок";
             var userCart = new ShoppingCart();
-            var cartVm = new CartViewModel();
+            var cartVm = new CartVm();
 
             if(HttpContext.Request.Cookies.ContainsKey("Cart"))
             {
@@ -93,7 +93,7 @@ namespace WebUI.Controllers
             var guid = Guid.Parse(HttpContext.Request.Cookies["Cart"]!);
             var productInCart = _context.ProductInCarts.Where(p => p.Id == id).Include(p => p.Product);
             var entity = productInCart.FirstOrDefault(p=>p.Id == id);
-            var editAmountVm = new CartEditAmountViewModel();
+            var editAmountVm = new CartEditAmountVm();
 
             if(entity != null) 
             {

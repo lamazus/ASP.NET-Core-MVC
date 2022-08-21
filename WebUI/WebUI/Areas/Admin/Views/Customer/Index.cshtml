@@ -1,0 +1,30 @@
+﻿@using Domain.Entities
+@model IEnumerable<Customer>
+
+<table>
+    <thead>
+        <tr>
+            <td>Адрес электронной почты</td>
+            <td>Имя</td>
+            <td>Номер телефона</td>
+            <td>Город</td>
+            <td>Адрес доставки</td>
+            <td>Количество заказов</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var customer in Model){
+            <tr>
+                <td><a asp-controller="Customer" asp-action="Details" asp-route-customerId="@customer.CustomerId">@customer.Email</a></td>
+                <td>@customer.Name</td>
+                <td>@customer.TelephoneNumber</td>
+                <td>@customer.City</td>
+                <td>@customer.Address</td>
+                <td>@customer.Orders.Count</td>
+                <td><a asp-controller="Customer" asp-action="Edit" asp-route-customerId=@customer.CustomerId>Редактировать</a></td>
+            </tr>    
+        }    
+
+    </tbody>
+</table>
+

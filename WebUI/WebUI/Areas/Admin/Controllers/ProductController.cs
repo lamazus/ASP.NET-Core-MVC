@@ -1,21 +1,33 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ProductController : Controller
     {
-        // GET: ProductController
-        public ActionResult Index()
+        private readonly BeautyShopDbContext _context;
+        public ProductController(BeautyShopDbContext context)
         {
-            return View();
+            _context = context;
+        }
+        // GET: ProductController
+        public async Task<ActionResult> Index()
+        {
+            var products = await _context.Products.Include(p => p.Category).ToListAsync();
+
+            return View(products);
         }
 
         // GET: ProductController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var product = await _context.Products.Include(p => p.Category).Include(p => p.Comments).FirstAsync(p => p.ProductId == id);
+
+            ViewData["referer"] = HttpContext.Request.Headers.Referer;
+            return View(product);
         }
 
         // GET: ProductController/Create
