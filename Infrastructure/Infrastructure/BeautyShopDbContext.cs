@@ -13,7 +13,7 @@ namespace Infrastructure
         public DbSet<Order> Orders  { get; set; }
         public DbSet<ProductInCart> ProductInCarts { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-
+        public DbSet<User> Users { get; set; }
         public BeautyShopDbContext(DbContextOptions options) : base(options)
         {
 

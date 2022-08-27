@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Infrastructure;
-using WebUI.Models;
-using Microsoft.EntityFrameworkCore;
+using WebUI.Services;
+
 
 namespace WebUI.Controllers
 {
@@ -30,12 +31,15 @@ namespace WebUI.Controllers
             if (isPaid && orderId != 0)
             {
 
-                var order = await _context.Orders.FindAsync(orderId);
+                var order = await _context.Orders.Include(p=>p.Customer).FirstOrDefaultAsync(p=>p.OrderId == orderId);
                 order.IsPaid = true;
                 _context.Orders.Update(order);
                 _context.SaveChanges();
-
                 HttpContext.Response.Cookies.Delete("Cart");
+
+                var sender = new EmailSender();
+                sender.SendReceipt(order.Customer.Name, order.Customer.Email, order.OrderId);
+
                 return RedirectToAction("Success");
             }
 

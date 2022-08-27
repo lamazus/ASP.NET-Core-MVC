@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using WebUI.Areas.Admin.Models;
 
 namespace WebUI.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class OrderController : Controller
     {

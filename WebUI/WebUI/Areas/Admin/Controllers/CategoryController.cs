@@ -3,9 +3,11 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using WebUI.Areas.Admin.Models;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebUI.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class CategoryController : Controller
     {

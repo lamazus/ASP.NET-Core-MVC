@@ -2,9 +2,12 @@
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using WebUI.Areas.Admin.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace WebUI.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class CustomerController : Controller
     {
@@ -55,7 +58,9 @@ namespace WebUI.Areas.Admin.Controllers
 
             return View(customerVm);
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string customerId, IFormCollection form)
         {
             var customer = await _context.Customers.FindAsync(Guid.Parse(customerId));
