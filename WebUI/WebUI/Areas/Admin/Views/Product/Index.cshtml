@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Domain.Entities.Product>
 
 <h3>Список товаров</h3>
+<a asp-action="Create">Добавить новый товар</a>
 <table>
     <thead>
         <tr>
@@ -19,11 +20,12 @@
                 <td>@prod.ProductId</td>
                 <td>@prod.Category.Name</td>
                 <td>@prod.Name</td>
-                <td>@prod.Price</td>
+                <td>@($"{prod.Price:C}")</td>
                 <td>@prod.NumberOfOrders</td>
                 <td>@prod.Stock</td>
                 <td><a asp-action="Details" asp-route-id="@prod.ProductId">Подробнее</a></td>
-
+                <td><a asp-action="Edit" asp-route-id="@prod.ProductId">Редактировать</a></td>
+                <td><a asp-action="Delete" asp-route-id="@prod.ProductId">Удалить</a></td>
             </tr>
         }
     </tbody>

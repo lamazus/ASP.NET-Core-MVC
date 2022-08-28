@@ -73,12 +73,17 @@ namespace WebUI.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int orderId, IFormCollection form)
         {
-            var order = await _context.Orders.FindAsync(orderId);
-            order.DeliveryDate = DateTime.Parse(form["DeliveryDate"]);
-            order.DeliveryTime = form["DeliveryTime"];
-            order.Commentary = form["Commentary"];
+            if (ModelState.IsValid)
+            {
+                var order = await _context.Orders.FindAsync(orderId);
+                order.DeliveryDate = DateTime.Parse(form["DeliveryDate"]);
+                order.DeliveryTime = form["DeliveryTime"];
+                order.Commentary = form["Commentary"];
 
-            return RedirectToAction("Details", new { orderId = orderId });
+                return RedirectToAction("Details", new { orderId = orderId });
+            }
+
+            return RedirectToAction(nameof(Edit), new { orderId = orderId });
         }
     }
 }

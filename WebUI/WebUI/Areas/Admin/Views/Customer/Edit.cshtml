@@ -2,11 +2,17 @@
 @model CustomerVm
 
 <form asp-action="Edit" asp-route-customerId="@Model.CustomerId" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input asp-for="Name" />
+    <span asp-validation-for="Name" class="text-danger"></span>
     <input asp-for="Email" />
+    <span asp-validation-for="Email" class="text-danger"></span>
     <input asp-for="TelephoneNumber" />
+    <span asp-validation-for="TelephoneNumber" class="text-danger"></span>
     <input asp-for="City"/>
+    <span asp-validation-for="City" class="text-danger"></span>
     <input asp-for="Address" />
+    <span asp-validation-for="Address" class="text-danger"></span>
     <input type="submit" value="Сохранить" />
 
 </form>

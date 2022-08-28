@@ -63,18 +63,22 @@ namespace WebUI.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string customerId, IFormCollection form)
         {
-            var customer = await _context.Customers.FindAsync(Guid.Parse(customerId));
+            if (ModelState.IsValid)
+            {
+                var customer = await _context.Customers.FindAsync(Guid.Parse(customerId));
 
-            customer.Name = form["Name"];
-            customer.Email = form["Email"];
-            customer.TelephoneNumber = form["TelephoneNumber"];
-            customer.City = form["City"];
-            customer.Address = form["Address"];
+                customer.Name = form["Name"];
+                customer.Email = form["Email"];
+                customer.TelephoneNumber = form["TelephoneNumber"];
+                customer.City = form["City"];
+                customer.Address = form["Address"];
 
-            _context.Customers.Update(customer);
-            await _context.SaveChangesAsync();
+                _context.Customers.Update(customer);
+                await _context.SaveChangesAsync();
 
-            return RedirectToAction("Details", new { customerId = customerId });
+                return RedirectToAction("Details", new { customerId = customerId });
+            }
+            return RedirectToAction(nameof(Edit), new { customerId = customerId });
 
         }
     }

@@ -45,17 +45,15 @@ namespace WebUI.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(string name)
         {
-            try
+            if (ModelState.IsValid)
             {
+
                 var category = new Category { Name = name };
                 _context.Categories.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
                 return View();
-            }
         }
 
         // GET: CategoryController/Edit/5
@@ -70,19 +68,16 @@ namespace WebUI.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int categoryId, string name)
         {
-            try
+            if (ModelState.IsValid)
             {
                 var category = await _context.Categories.FindAsync(categoryId);
                 category.Name = name;
                 _context.Update(category);
                 await _context.SaveChangesAsync();
                 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit), new { categoryId = categoryId });
             }
-            catch
-            {
                 return RedirectToAction(nameof(Index));
-            }
         }
 
         // GET: CategoryController/Delete/5

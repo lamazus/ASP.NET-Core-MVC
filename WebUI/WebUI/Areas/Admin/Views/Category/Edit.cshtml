@@ -1,11 +1,13 @@
 ﻿@using Domain.Entities;
 @model Category
 
-<form asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-antiforgery="true" method="post"> 
+<form asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-antiforgery="true" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <label>Id</label>
     <input name="categoryId" type="text" value="@Model.CategoryId" hidden>
     <input name="categoryId" type="text" value="@Model.CategoryId" disabled>
     <label>Название категории</label>
-    <input name="name" type="text" value="@Model.Name">
+    <input asp-for="Name" value="@Model.Name">
+    <span asp-validation--for="Name" class="text-danger"></span>
     <input type="submit" value="Сохранить">
 </form>

@@ -1,0 +1,39 @@
+﻿@using Domain.Entities
+
+<h3>Добавить новый товар</h3>
+<form asp-action="Create" enctype="multipart/form-data" method="post">
+    <p>
+        <label>Категория</label><br />
+        <select name="categoryId">
+            @foreach(Category category in ViewBag.Categories)
+            {
+                <option name="categoryId" value="@category.CategoryId">@category.Name</option>
+            }
+        </select>
+    </p>
+    <p>
+        <label>Название товара</label><br />
+        <input name="name" type="text" required/>
+    </p>
+     <p>
+        <label>Цена</label><br />
+        <input name="price" type="number" required/>
+    </p>
+    <p>
+        <label>Остаток на складе</label><br />
+        <input name="stock" type="number" required />
+    </p>
+    <p>
+        <label>Описание</label><br />
+        <textarea name="description" maxlength="255" required></textarea>
+    </p>
+    <p>
+        <label>Изображение</label><br />
+        <input name="image" type="file" accept="image/jpeg,image/png" required />
+    </p>
+     <p>
+        <input type="submit" value="Добавить"/>
+    </p>
+</form>
+
+

@@ -33,8 +33,13 @@ namespace WebUI.Areas.Admin.Controllers
         {
             var username = form["login"].ToString();
             var password = form["password"].ToString();
-
+            
             var user = await _context.Users.FirstOrDefaultAsync(p => p.Username == username);
+
+            if(user == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
 
             if (!_authService.VerifyPassword(password, user.PasswordHash))
                 return View(nameof(Login));
