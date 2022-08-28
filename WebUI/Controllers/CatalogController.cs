@@ -51,7 +51,7 @@ namespace WebUI.Controllers
         {
             var products = _context.Products.Include(p=>p.Comments).Include(p=>p.Category).FirstOrDefault(p=>p.ProductId == id);
             var product = _context.Products.Find(id);
-            var productVm = new CatalogProductDetailsVm();
+            var productVm = new ProductDetailsVm();
 
             if(product != null)
             {
