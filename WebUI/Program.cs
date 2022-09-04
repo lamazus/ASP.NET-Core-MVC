@@ -30,6 +30,7 @@ builder.Services.AddScoped<IAuthenticateService, AuthenticateService>();
 
 var app = builder.Build();
 
+app.UseHsts();
 app.UseStatusCodePages();
 app.UseRouting();
 app.UseStaticFiles();

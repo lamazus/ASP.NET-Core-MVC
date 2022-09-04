@@ -1,4 +1,5 @@
 ﻿@using WebUI.Models;
+@using System.Globalization
 @model CartVm;
 
 @{
@@ -26,16 +27,16 @@ else
             {
                 <tr>
                     <td>@prod.Product.Name</td>
-                    <td>@($"{(prod.Product.Price):C}")</td>
+                    <td>@prod.Product.Price.ToString("C", new CultureInfo("ru-RU"))</td>
                     <td>@prod.Amount</td>
-                    <td>@($"{(prod.Product.Price*prod.Amount):C}")</td>
+                    <td>@{(prod.Product.Price * prod.Amount).ToString("C", new CultureInfo("ru-RU"));}</td>
                     <td class="d-flex"><a asp-action="Edit" asp-route-id=@prod.Id class="btn btn-sm btn-warning">Изменить количество</a>
                     <a asp-action="Delete" asp-route-id=@prod.Id class="btn btn-sm btn-danger ">Удалить</a></td>
                 </tr>
             }
         </tbody>
     </table>
-    <b>Итого: @($"{Model.ComputePrice():C}")</b>
+    <b>Итого: @Model.ComputePrice().ToString("C", new CultureInfo("ru-RU"))</b>
     <hr />
    <a asp-controller="Cart" asp-action="ClearCart" asp-route-cart="@Model.ProductsInCarts" class="btn btn-sm btn-primary text-decoration-none">Очистить корзину</a>
    <a asp-controller="Order" asp-action="Index" class="btn btn-sm btn-primary text-decoration-none">Оформить заказ</a>

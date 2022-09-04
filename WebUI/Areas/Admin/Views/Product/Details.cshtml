@@ -1,4 +1,5 @@
-﻿@model Domain.Entities.Product
+﻿@using System.Globalization
+@model Domain.Entities.Product
 
 <h3 class="text-light">@Model.Name ID:@Model.ProductId</h3>
 
@@ -8,7 +9,7 @@
     @Model.Category.Name<br />
 
     <b>Стоимость</b><br />
-    @($"{Model.Price:C}")<br />
+    @Model.Price.ToString("C", new CultureInfo("ru-RU"))<br />
 
     <b>Остаток на складе</b><br />
     @Model.Stock<br />

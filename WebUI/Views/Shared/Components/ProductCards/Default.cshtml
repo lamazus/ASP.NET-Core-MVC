@@ -1,4 +1,5 @@
 ﻿@using Domain.Entities
+@using System.Globalization
 @model IEnumerable<Product>
 
  <div class="row">
@@ -10,7 +11,7 @@
                 <h6 class="card-title"><a class="text-decoration-none" style="color: black;" asp-action="Details" asp-route-id="@prod.ProductId">@prod.Name</a></h6>
                 @await Component.InvokeAsync("DisplayRateStars", new { product = prod})
                 <br/>
-                <h7 class="text-dark">@prod.Price.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</h7><br/>
+                <h7 class="text-dark">@prod.Price.ToString("C", new CultureInfo("ru-RU"))</h7><br/>
                 <p style="font-size: small">Куплено: @prod.NumberOfOrders раз.</p>
                     @if (@prod.Stock > 0)
                     {
