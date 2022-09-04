@@ -1,4 +1,7 @@
-﻿<h3>Форма оформления заказа</h3>
+﻿@{
+    ViewData["Title'"] = "Оформление заказа";
+}
+<h3>Форма оформления заказа</h3>
 @using(Html.BeginForm("AddOrder", "Order", FormMethod.Post))
 {   
         <label class="form-label">Ваше имя</label>
