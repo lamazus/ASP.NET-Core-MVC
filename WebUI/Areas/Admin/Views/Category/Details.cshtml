@@ -1,20 +1,20 @@
 ﻿@using WebUI.Areas.Admin.Models
 @model CategoryWithProductsVm
 
-<h3>@Model.Category.CategoryId - @Model.Category.Name</h3>
+<h3 class="text-light">@Model.Category.CategoryId - @Model.Category.Name</h3>
 
-<p>Список товаров данной категории</p>
+<p class="text-light">Список товаров данной категории</p>
 @if(Model.Products.Count() == 0)
 {
-    <p>Список пуст</p>
+    <p class="text-light">Список пуст</p>
 }
 else
 {
-    <ol>
+    <ol class="list-group list-group-numbered w-50">
         @foreach(var prod in Model.Products)
         {
-            <li><a asp-controller="Product" asp-action="Details" asp-route-categoryId=@prod.ProductId>@prod.Name</a></li>
+            <li class="list-group-item text-light" style="background-color: rgb(80, 80, 90);"><a asp-controller="Product" asp-action="Details" asp-route-id="@prod.ProductId" class="text-info">@prod.Name</a></li>
         }
     </ol>
 }
-<a href="@ViewData["referer"]">Назад</a>
+<a href="@ViewData["referer"]" class="btn btn-lg btn-outline-success mt-2">Назад</a>

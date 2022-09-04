@@ -1,31 +1,21 @@
 ﻿@using WebUI.Areas.Admin.Models
 @model CustomerVm
 
-<h3>Подробная информация о покупателе</h3>
-<div>
-    <b>Имя</b><br />
-    @Model.Name<br />
-
-    <b>Адрес электронной почты</b><br />
-    @Model.Email<br />
-
-    <b>Контактный номер телефона</b><br />
-    @Model.TelephoneNumber<br />
-
-    <b>Город</b><br />
-    @Model.City<br />
-
-    <b>Адрес доставки</b><br />
-    @Model.Address<br />
-
-    <h4>Заказы</h4>
-    <ol>
+<h3 class="text-light">Подробная информация о покупателе</h3>
+<div class="text-light">
+    <p>Имя: @Model.Name</p>
+    <p>Адрес электронной почты: @Model.Email</p>
+    <p>Контактный номер телефона: @Model.TelephoneNumber</p>
+    <p>Город: @Model.City</p>
+    <p>Адрес доставки: @Model.Address</p>
+    <h6 class="text-light">Заказы</h6>
+    <ol class="list-group list-group-numbered text-light w-25 mb-2">
         @foreach(var order in Model.Orders)
         {
-            <li>
-                <a asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId">@order.OrderId</a>
+            <li class="list-group-item" style="background-color: rgb(80, 80, 90);">
+                <a asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId" class="text-info w-25">@order.OrderId</a>
             </li>
         }
     </ol>
-<a href="@ViewData["referer"]">Назад</a>
+    <a href="@ViewData["referer"]" class="btn btn-lg btn-outline-success mt-2">Вернуться на предыдущую страницу</a>
 </div>

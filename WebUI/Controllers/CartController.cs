@@ -72,7 +72,6 @@ namespace WebUI.Controllers
             var s = HttpContext.Request.Headers.Referer.ToString();
             return Redirect(s);
         }
-        [HttpPost]
         public IActionResult Delete(int id)
         {
             var guid = Guid.Parse(HttpContext.Request.Cookies["Cart"]!);

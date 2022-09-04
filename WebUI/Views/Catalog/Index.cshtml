@@ -6,14 +6,16 @@
 
 }
 <div class="row">
-    <div class="list-group col-3">
-        <!--Навигация по категориям НАЧАЛО-->
-        @foreach(Category c in ViewBag.Categories)
-        {
-            <a asp-controller="Catalog" asp-action="Category" asp-route-id="@c.CategoryId" class="list-group-item list-group-item-action">@c.Name</a>
-        }
-        <!--Навигация по категориям КОНЕЦ-->
+    <!--Навигация по категориям НАЧАЛО-->
+    <div class="col-3">
+        <div class="list-group">
+            @foreach(Category c in ViewBag.Categories)
+            {
+                <a asp-controller="Catalog" asp-action="Category" asp-route-id="@c.CategoryId" class="list-group-item list-group-item-action ">@c.Name</a>
+            }
+        </div>
     </div>
+    <!--Навигация по категориям КОНЕЦ-->
 
     <div class="container-flex text-center col-9">
         <!--Вывод карточек товаров НАЧАЛО-->

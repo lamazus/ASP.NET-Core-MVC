@@ -1,39 +1,31 @@
 ﻿@using Domain.Entities
 
-<h3>Добавить новый товар</h3>
-<form asp-action="Create" enctype="multipart/form-data" method="post">
-    <p>
-        <label>Категория</label><br />
-        <select name="categoryId">
+<h3 class="text-light">Добавить новый товар</h3>
+<form asp-action="Create" enctype="multipart/form-data" method="post" class="form-group text-light w-25">
+        <label class="form-label">Категория</label>
+        <select name="categoryId" class="form-control">
             @foreach(Category category in ViewBag.Categories)
             {
                 <option name="categoryId" value="@category.CategoryId">@category.Name</option>
             }
-        </select>
-    </p>
-    <p>
-        <label>Название товара</label><br />
-        <input name="name" type="text" required/>
-    </p>
-     <p>
-        <label>Цена</label><br />
-        <input name="price" type="number" required/>
-    </p>
-    <p>
-        <label>Остаток на складе</label><br />
-        <input name="stock" type="number" required />
-    </p>
-    <p>
-        <label>Описание</label><br />
-        <textarea name="description" maxlength="255" required></textarea>
-    </p>
-    <p>
-        <label>Изображение</label><br />
-        <input name="image" type="file" accept="image/jpeg,image/png" required />
-    </p>
-     <p>
-        <input type="submit" value="Добавить"/>
-    </p>
+        </select><br />
+
+        <label class="form-label">Название товара</label>
+        <input name="name" type="text" class="form-control text-dark" required/>
+        
+        <label class="form-label">Цена</label>
+        <input name="price" type="number" class="form-control text-dark" required/>
+       
+        <label class="form-label">Остаток на складе</label>
+        <input name="stock" type="number" class="form-control text-dark" required />
+       
+        <label class="form-label">Описание</label>
+        <textarea name="description" maxlength="255" class="form-control text-dark" required></textarea>
+       
+        <label class="form-label">Изображение</label>
+        <input name="image" type="file" accept="image/jpeg,image/png" class="form-control" required />
+        
+        <input type="submit" value="Добавить" class="btn btn-sm btn-outline-success mt-2"/>
 </form>
 
 

@@ -1,18 +1,30 @@
 ﻿@using WebUI.Areas.Admin.Models
 @model CustomerVm
 
-<form asp-action="Edit" asp-route-customerId="@Model.CustomerId" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input asp-for="Name" />
-    <span asp-validation-for="Name" class="text-danger"></span>
-    <input asp-for="Email" />
-    <span asp-validation-for="Email" class="text-danger"></span>
-    <input asp-for="TelephoneNumber" />
-    <span asp-validation-for="TelephoneNumber" class="text-danger"></span>
-    <input asp-for="City"/>
-    <span asp-validation-for="City" class="text-danger"></span>
-    <input asp-for="Address" />
-    <span asp-validation-for="Address" class="text-danger"></span>
-    <input type="submit" value="Сохранить" />
+<h3 class="text-light">Редактирование покупателя</h3>
+<form asp-action="Edit" asp-route-customerId="@Model.CustomerId" method="post" class="form-group text-light w-50">
 
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <label class="form-label">Имя</label>
+    <input asp-for="Name" class="form-control text-dark" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+
+    <label class="form-label">Email</label>
+    <input asp-for="Email" class="form-control text-dark" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+
+    <label class="form-label">Контактный номер телефона</label>
+    <input asp-for="TelephoneNumber" class="form-control text-dark" />
+    <span asp-validation-for="TelephoneNumber" class="text-danger"></span>
+
+    <label class="form-label">Город</label>
+    <input asp-for="City" class="form-control text-dark"/>
+    <span asp-validation-for="City" class="text-danger"></span>
+    
+    <label class="form-label">Адрес</label>
+    <input asp-for="Address" class="form-control text-dark" />
+    <span asp-validation-for="Address" class="text-danger"></span>
+
+    <input type="submit" value="Сохранить" class="btn btn-sm btn-outline-success mt-2" />
 </form>

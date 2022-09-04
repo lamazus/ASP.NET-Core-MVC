@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<Domain.Entities.Product>
 
-<h3>Список товаров</h3>
-<a asp-action="Create">Добавить новый товар</a>
-<table>
+<h3 class="text-light">Список товаров</h3>
+<table class="table table-stripe table-dark">
     <thead>
         <tr>
-            <td>Id</td>
-            <td>Категория</td>
-            <td>Название</td>
-            <td>Цена</td>
-            <td>Количество покупок</td>
-            <td>Осталось на складе</td>
+            <th>Id</th>
+            <th>Категория</th>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Количество покупок</th>
+            <th>Осталось на складе</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -18,15 +18,16 @@
         {
             <tr>
                 <td>@prod.ProductId</td>
-                <td>@prod.Category.Name</td>
-                <td>@prod.Name</td>
+                <td><a asp-controller="Category" asp-action="Details" asp-route-id="@prod.CategoryId">@prod.Category.Name</a></td>
+                <td><a asp-action="Details" asp-route-id="@prod.ProductId" class=text-info>@prod.Name</a></td>
                 <td>@($"{prod.Price:C}")</td>
                 <td>@prod.NumberOfOrders</td>
                 <td>@prod.Stock</td>
-                <td><a asp-action="Details" asp-route-id="@prod.ProductId">Подробнее</a></td>
-                <td><a asp-action="Edit" asp-route-id="@prod.ProductId">Редактировать</a></td>
-                <td><a asp-action="Delete" asp-route-id="@prod.ProductId">Удалить</a></td>
+                <td class="d-flex"><a asp-action="Details" asp-route-id="@prod.ProductId" class="btn btn-sm btn-outline-info">Подробнее</a>
+                <a asp-action="Edit" asp-route-id="@prod.ProductId" class="btn btn-sm btn-outline-warning">Редактировать</a>
+                <a asp-action="Delete" asp-route-id="@prod.ProductId" class="btn btn-sm btn-outline-danger">Удалить</a></td>
             </tr>
         }
     </tbody>
 </table>
+<a asp-action="Create" class="btn btn-lg btn-outline-success">Добавить новый товар</a>

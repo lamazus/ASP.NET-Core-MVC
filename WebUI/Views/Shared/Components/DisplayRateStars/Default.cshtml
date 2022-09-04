@@ -1,0 +1,29 @@
+﻿@using Domain.Entities
+@model Product
+
+@if (Model.Comments.Count != 0)
+{
+    var rate = Model.CalculateRating();
+    switch (rate)
+    {
+        case 1:
+            <h7>&#9733;&#9734;&#9734;&#9734;&#9734;</h7>
+            break;
+        case 2:
+            <h7>&#9733;&#9733;&#9734;&#9734;&#9734;</h7>
+            break;
+        case 3:
+            <h7>&#9733;&#9733;&#9733;&#9734;&#9734;</h7>
+            break;
+        case 4:
+            <h7>&#9733;&#9733;&#9733;&#9733;&#9734;</h7>
+            break;
+        case 5:
+            <h7>&#9733;&#9733;&#9733;&#9733;&#9733;</h7>
+            break;
+    };
+} 
+else
+{
+    <h7>&#9734;&#9734;&#9734;&#9734;&#9734;</h7>
+}

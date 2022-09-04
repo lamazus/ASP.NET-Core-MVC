@@ -27,7 +27,7 @@ namespace WebUI.Controllers
             }
 
             ViewBag.Categories = await _context.Categories.ToListAsync();
-            ViewBag.MostPopularity = _context.Products.OrderByDescending(p => p.NumberOfOrders).Where(p=>p.Stock>0).Take(4);
+            ViewBag.MostPopularity = _context.Products.Include(p => p.Comments).OrderByDescending(p => p.NumberOfOrders).Where(p=>p.Stock>0).Take(4);
 
             return View();
         }
@@ -39,9 +39,9 @@ namespace WebUI.Controllers
             ViewBag.MinPrice = Convert.ToInt32(await _context.Products.MinAsync(p=>p.Price));
             ViewBag.MaxPrice = Convert.ToInt32(await _context.Products.MaxAsync(p=>p.Price));
 
-            var productsFiltered = await _context.Products.Where(p => p.CategoryId == id).ToListAsync();
+            var productsFiltered = await _context.Products.Include(p=>p.Comments).Where(p => p.CategoryId == id).ToListAsync();
 
-            AddPagination(productsFiltered, 8, page, out CatalogPageVm catalogPvm);
+            AddPagination(productsFiltered, 10, page, out CatalogPageVm catalogPvm);
 
             return View(catalogPvm);
         }
@@ -76,10 +76,10 @@ namespace WebUI.Controllers
             ViewBag.SelectedCategory = await _context.Categories.FirstAsync(p => p.CategoryId == categoryId);
             ViewBag.Categories = await _context.Categories.ToListAsync();
 
-             var products = await _context.Products.Where(p => p.CategoryId == categoryId).ToListAsync();
+             var products = await _context.Products.Include(p=>p.Comments).Where(p => p.CategoryId == categoryId).ToListAsync();
 
             SortProducts(ref products, sortMethod);
-            AddPagination(products, 8, page, out CatalogPageVm catalogPvm);
+            AddPagination(products, 10, page, out CatalogPageVm catalogPvm);
 
             return View("Category", catalogPvm);
          }
@@ -87,13 +87,13 @@ namespace WebUI.Controllers
         // Поиск по слову
         public IActionResult Search(string searchString, string sortMethod, int page = 1)
         {
-            var products = _context.Products.Where(p => p.Name.ToLower().Contains(searchString.Trim().ToLower())).ToList();
+            var products = _context.Products.Include(p => p.Comments).Where(p => p.Name.ToLower().Contains(searchString.Trim().ToLower())).ToList();
             ViewBag.SearchString = searchString;
             ViewBag.ResultCount = products.Count;
             ViewBag.SortMethod = sortMethod;
 
             SortProducts(ref products, sortMethod);
-            AddPagination(products, 8, page, out CatalogPageVm catalogPvm);
+            AddPagination(products, 10, page, out CatalogPageVm catalogPvm);
 
             return View(catalogPvm);
         }
@@ -120,7 +120,7 @@ namespace WebUI.Controllers
             ViewBag.MinPrice = _minPrice;
             ViewBag.MaxPrice = _maxPrice;
 
-           var products = await _context.Products.Where(p=>p.Price >= _minPrice && p.Price <= _maxPrice && p.CategoryId==categoryId).ToListAsync();
+           var products = await _context.Products.Include(p => p.Comments).Where(p=>p.Price >= _minPrice && p.Price <= _maxPrice && p.CategoryId==categoryId).ToListAsync();
 
             if (availability == "on")
             {
@@ -129,7 +129,7 @@ namespace WebUI.Controllers
             }
 
             SortProducts(ref products, sortMethod);
-            AddPagination(products, 8, page, out CatalogPageVm catalogPvm);
+            AddPagination(products, 10, page, out CatalogPageVm catalogPvm);
 
             return View(catalogPvm);
         }

@@ -21,6 +21,7 @@
                     <a asp-action="Category" asp-route-id="@c.CategoryId" class="list-group-item list-group-item-action">@c.Name</a>
                 }
             }
+            <hr/>
         </div>
         <!--Конец навигации-->
         <!--Фильтрация вывода-->
@@ -35,48 +36,17 @@
         <!--Конец фильтрации-->
     </div>
 <!--Конец боковой панели-->
-
         <div class="container-flex text-center col-9">
             <!--Сортировка-->
-             @using(Html.BeginForm("Sort", "Catalog", FormMethod.Get, new { @products = ViewBag.Products}))
-            {
-                <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
-                <label>Способ сортировки</label>
-                    @await Html.PartialAsync("_SortMethodsInForm");
-                    <input type="submit" value="Сортировать">
-            }
+                 @using(Html.BeginForm("Sort", "Catalog", FormMethod.Get, new { @products = ViewBag.Products}))
+                {
+                    <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
+                        @await Html.PartialAsync("_SortMethodsInForm");
+                }
             <!--Конец сортировки-->
         
     <!--Список карточек товаров-->
-        <div class="row">
-            @foreach(Product prod in Model.Products)
-            {
-                <div class="card p-3 m-3" style="width: 13rem;">
-                    <a asp-action="Details" asp-route-id="@prod.ProductId"><img src="/images/products/@prod.ImageName" class="card-img-top" alt="@prod.Name"></a>
-                    <div class="card-body">
-                    <h5 class="card-title"><a class="text-decoration-none" style="color: black;" asp-action="Details" asp-route-id="@prod.ProductId">@prod.Name</a></h5>
-                    <h7>@prod.Price.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</h7>
-                    <br>
-                        @if (@prod.Stock > 0)
-                        {
-                            <span style="font-size: small"> Доступно @prod.Stock шт.</span>
-                            using (Html.BeginForm("Add", "Cart", FormMethod.Post))
-                            {
-                                <input type="number" name="id" value="@prod.ProductId" hidden>
-                                <input type="number" name="amount" min="1", max="100" size="5" step="1" value="1">
-                                <input type="submit" value="В корзину" class="btn btn-primary btn-sm rounded-bottom">
-                            }
-                        }
-                        else
-                        {
-                            <span style="font-size: small">Нет в наличии.</span>
-                        }
-                        <span style="font-size: small">Куплено: @prod.NumberOfOrders раз.</span>
-
-                    </div>
-                </div>
-            }
-        </div>
+        @await Component.InvokeAsync("ProductCards", new { products = Model.Products })
     <!--Конец списка товаров-->
 
 <!-- Вывод страниц каталога -->

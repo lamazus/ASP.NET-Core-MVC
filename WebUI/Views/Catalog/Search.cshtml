@@ -12,10 +12,9 @@
         @using(Html.BeginForm("Search", "Catalog", FormMethod.Get))
             {
                 <input type="text" name="searchString" value="@ViewBag.SearchString" hidden />
-                <label>Способ сортировки</label>
                 @await Html.PartialAsync("_SortMethodsInForm");
-                    <input type="submit" value="Сортировать">
             }
+         </div>
         <!--Конец сортировки-->
     <!--Список карточек товаров-->
     @await Component.InvokeAsync("ProductCards", new { products = Model.Products})

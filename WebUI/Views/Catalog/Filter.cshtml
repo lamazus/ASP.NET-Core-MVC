@@ -38,16 +38,16 @@
 
         <div class="container-flex text-center col-9">
             <!--Сортировка-->
-             @using(Html.BeginForm("Filter", "Catalog", FormMethod.Get))
-            {
-                <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
-                <input type="text" name="minPrice" value="@ViewBag.MinPrice" hidden/>
-                <input type="text" name="maxPrice" value="@ViewBag.MaxPrice" hidden/>
-                <input type="text" name="availability" value="@ViewBag.Availability" hidden/>
-                <label>Способ сортировки</label>
-                    @await Html.PartialAsync("_SortMethodsInForm");
-                    <input type="submit" value="Сортировать">
-            }
+            <div class="d-inline">
+                 @using(Html.BeginForm("Filter", "Catalog", FormMethod.Get))
+                {
+                    <input type="text" name="categoryId" value="@ViewBag.SelectedCategory.CategoryId" hidden/>
+                    <input type="text" name="minPrice" value="@ViewBag.MinPrice" hidden/>
+                    <input type="text" name="maxPrice" value="@ViewBag.MaxPrice" hidden/>
+                    <input type="text" name="availability" value="@ViewBag.Availability" hidden/>
+                        @await Html.PartialAsync("_SortMethodsInForm");
+                }
+            </div>
             <!--Конец сортировки-->
         
     <!--Список карточек товаров-->

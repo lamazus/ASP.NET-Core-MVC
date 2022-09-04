@@ -57,33 +57,33 @@ namespace WebUI.Areas.Admin.Controllers
         }
 
         // GET: CategoryController/Edit/5
-        public async Task<ActionResult> Edit(int categoryId)
+        public async Task<ActionResult> Edit(int id)
         {
-            var category = await _context.Categories.FindAsync(categoryId);
+            var category = await _context.Categories.FindAsync(id);
             return View(category);
         }
 
         // POST: CategoryController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int categoryId, string name)
+        public async Task<ActionResult> Edit(int id, string name)
         {
             if (ModelState.IsValid)
             {
-                var category = await _context.Categories.FindAsync(categoryId);
+                var category = await _context.Categories.FindAsync(id);
                 category.Name = name;
                 _context.Update(category);
                 await _context.SaveChangesAsync();
                 
-                return RedirectToAction(nameof(Edit), new { categoryId = categoryId });
+                return RedirectToAction(nameof(Edit), new { categoryId = id });
             }
                 return RedirectToAction(nameof(Index));
         }
 
         // GET: CategoryController/Delete/5
-        public async Task<ActionResult> Delete(int categoryId)
+        public async Task<ActionResult> Delete(int id)
         {
-            var category = await _context.Categories.FindAsync(categoryId);
+            var category = await _context.Categories.FindAsync(id);
 
             return View(category);
         }
@@ -91,11 +91,11 @@ namespace WebUI.Areas.Admin.Controllers
         // POST: CategoryController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int categoryId, string confirm)
+        public async Task<ActionResult> Delete(int id, string confirm)
         {
             if(confirm =="Да")
             {
-                var category = await _context.Categories.FindAsync(categoryId);
+                var category = await _context.Categories.FindAsync(id);
 
                 _context.Categories.Remove(category);
                 _context.SaveChanges();

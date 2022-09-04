@@ -1,12 +1,17 @@
-﻿<h3>Страница входа в панель управления</h3>
-<form asp-action="Login" method="post">
-    <p>
-        <label>Логин</label><br />
-        <input type="text" name="login" required/>
-    </p>
-    <p>
-        <label>Пароль</label><br />
-        <input type="password" name="password" required/>
-    </p>
-    <input type="submit" value="Войти" />
-</form>
+﻿@{
+    Layout = null;
+}
+<link href="/css/bootstrap.min.css" rel="stylesheet" />
+
+    <div class="h-100 d-flex align-items-center justify-content-center bg-primary">
+        <div class="border border-secondary bg-light rounded p-3">
+            <h4>Вход в панель управления</h4>
+            <form asp-action="Login" method="post" class="form-group">
+                    <label class="form-label">Логин</label>
+                    <input type="text" name="login" value="admin" class="form-control" required/>
+                    <label class="form-label">Пароль</label>
+                    <input type="password" name="password" value="admin" class="form-control" required/>
+                <input type="submit" value="Войти" class="btn btn-sm btn-dark mt-2" />
+            </form>
+        </div>
+</div>

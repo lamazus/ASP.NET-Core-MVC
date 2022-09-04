@@ -1,52 +1,45 @@
 ﻿@using Domain.Entities
 @model Product
 
-<h3>Редактирование товара</h3>
-<form asp-action="Edit" enctype="multipart/form-data" method="post">
+<h3 class="text-light">Редактирование товара</h3>
+<form asp-action="Edit" enctype="multipart/form-data" method="post" class="form-group text-light w-25">
 
-    <img src="/images/products/@Model.ImageName"  />
-     <p>
-        <label>Новое изображение</label><br />
-        <input name="image" type="file" accept="image/jpeg,image/png"/>
-    </p>
-    <p>
-        <label>Id</label><br/>
-        <input name="id" type="text" value="@Model.ProductId" disabled/>
-    </p>
-    <p>
-        <label>Категория</label><br/>
-        <select name="categoryId" >
-            @foreach(Category cat in ViewBag.Categories)
-            {
-                if(cat.CategoryId == Model.CategoryId)
-                    { 
-                        <option name="categoryId" value="@cat.CategoryId" selected>@cat.Name</option> 
-                    }
-                else
-                    { 
-                        <option name="categoryId" value="@cat.CategoryId">@cat.Name</option>
-                    }
-            }
-         </select>
-    </p>
-    <p>
-        <label>Название</label><br/>
-        <input name="name" type="text" value="@Model.Name"/>
-    </p>
-    <p>
-        <label>Цена</label><br/>
-        <input name="price" type="number" value="@Model.Price" />
-    </p>
-    <p>
-        <label>Остаток на складе</label><br/>
-        <input name="stock" type="number" value="@Model.Stock" />
-    </p>
-    <p>
-        <label>Описание</label><br/>
-        <textarea name="description" maxlength="255" rows="5" cols="50">@Model.Description</textarea>
-    </p>
-    <p>
-        <input type="submit" value="Сохранить" />
-    </p>
+    <img src="/images/products/@Model.ImageName" class="rounded"  />
+    <br />
+    
+    <label class="form-label">Новое изображение</label>
+    <input name="image" type="file" accept="image/jpeg,image/png" class="form-control mb-2"/>
+    
+    <label class="form-label">Id</label>
+    <input name="id" type="text" value="@Model.ProductId" class="form-control" disabled/>
+   
+    <label class="form-label">Категория</label><br/>
+    <select name="categoryId" class="form-control" >
+        @foreach(Category cat in ViewBag.Categories)
+        {
+            if(cat.CategoryId == Model.CategoryId)
+                { 
+                    <option name="categoryId" value="@cat.CategoryId" selected>@cat.Name</option> 
+                }
+            else
+                { 
+                    <option name="categoryId" value="@cat.CategoryId">@cat.Name</option>
+                }
+        }
+        </select>
+    
+    <label class="form-label">Название</label><br/>
+    <input name="name" type="text" value="@Model.Name" class="form-control"/>
+    
+    <label class="form-label">Цена</label><br/>
+    <input name="price" type="number" value="@Model.Price" class="form-control" />
+    
+    <label class="form-label">Остаток на складе</label><br/>
+    <input name="stock" type="number" value="@Model.Stock" class="form-control" />
+    
+    <label class="form-label">Описание</label><br/>
+    <textarea name="description" maxlength="255" rows="5" cols="50" class="form-control">@Model.Description</textarea>
+    
+    <input type="submit" value="Сохранить" class="btn btn-sm btn-outline-success mt-2"/>
 </form>
 

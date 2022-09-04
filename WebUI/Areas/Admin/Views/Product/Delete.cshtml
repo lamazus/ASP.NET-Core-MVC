@@ -1,15 +1,15 @@
 ﻿@model WebUI.Areas.Admin.Models.ProductToDeleteVm
 
-<h3>Удаление товара</h3>
-<img src="/images/products/@Model.ImageName" />
-<p>
-    @Model.ProductId<br />
-    @Model.Name<br />
-    @Model.Category.Name<br />
+<h3 class="text-light">Удаление товара</h3>
+<img src="/images/products/@Model.ImageName" class="rounded"/>
+<p class="text-light">
+    <span>Id: @Model.ProductId</span><br />
+    <span>Имя: @Model.Name</span><br />
+    <span>Категория: @Model.Category.Name</span><br />
 </p>
 
-<form asp-action="Delete" method="post">
-    <label>Подтвердите удаление</label>
-    <input name="confirm" type="submit" value="Да" />
-    <input name="confirm" type="submit" value="Нет" />
+<form asp-action="Delete" method="post" class="form-group">
+    <label class="form-label text-light">Подтвердите удаление</label><br />
+    <input name="confirm" type="submit" value="Да" class="btn btn-md btn-success"/>
+    <input name="confirm" type="submit" value="Нет" class="btn btn-md btn-danger" />
 </form>

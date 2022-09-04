@@ -5,70 +5,128 @@
     ViewData["Title"] = $"{Model.Name}";
 }
 <div class="container">
-    <div class="col-4">
-        <img src="/images/products/@Model.ImageName" alt="Изображение @Model.Name"/>
-    </div>
-    <div class="col-8">
-        <h5>@Model.Name</h5>
-        <ul>
-            <li>Категория: @Model.Category!.Name</li>
-            <li>Оценка:
-                @if(@Model.Comments.Count == 0)
+    <div class="row">
+        <div class="col-9">
+            <img src="/images/products/@Model.ImageName" alt="Изображение @Model.Name"/>
+            <h5>@Model.Name</h5>
+            <p>Категория: @Model.Category!.Name</p>
+            <p>Оценка: @if (Model.Comments.Count != 0)
+            {
+                var rate = Model.CalculateRating();
+                switch (rate)
                 {
-                    <span>Оценок нет</span>
-                }
-                else
-                {
-                    @Model.CalculateRating()
-                }</li>
-            <li>Количество покупок: @Model.NumberOfOrder</li>
-            <li>Описание: @Model.Description</li>
-            <li>Цена: @($"{Model.Price:C}")</li>
-            <li>Информация о наличии:  
-                @if (@Model.Stock > 0)
-                {
-                    <span>Доступно @Model.Stock шт.</span>
+                    case 1:
+                        <h7>&#9733;&#9734;&#9734;&#9734;&#9734;</h7>
+                        break;
+                    case 2:
+                        <h7>&#9733;&#9733;&#9734;&#9734;&#9734;</h7>
+                        break;
+                    case 3:
+                        <h7>&#9733;&#9733;&#9733;&#9734;&#9734;</h7>
+                        break;
+                    case 4:
+                        <h7>&#9733;&#9733;&#9733;&#9733;&#9734;</h7>
+                        break;
+                    case 5:
+                        <h7>&#9733;&#9733;&#9733;&#9733;&#9733;</h7>
+                        break;
+                };
+            } 
+            else
+            {
+                <h7>&#9734;&#9734;&#9734;&#9734;&#9734;</h7>
+            }</p>
+            <p>Количество покупок: @Model.NumberOfOrder</p>
+            <p>Описание: @Model.Description</p>
+        </div>
+
+        <div class="col-3">
+            <div class="border border-primary rounded bg-light p-4">
+                    @if (@Model.Stock > 0)
+                    {
+                        <span>Для заказ доступно @Model.Stock шт.</span>
                     
-                }
-                else
+                    }
+                    else
+                    {
+                        <span>Нет в наличии.</span>
+                    }</p>
+                <p>Цена: @($"{Model.Price:C}")</p>
+                <p>@using (Html.BeginForm("Add", "Cart", FormMethod.Post))
                 {
-                    <span>Нет в наличии.</span>
-                }</li>
-            <li>@using (Html.BeginForm("Add", "Cart", FormMethod.Post))
-                        {
-                            <input type="number" name="id" value="@Model.Id" hidden>
-                            <input type="number" name="amount" min="1", max="100" size="5" step="1" value="1">
-                            <input type="submit" value="В корзину" class="btn btn-primary btn-sm rounded-bottom">
-                        }</li>
-        </ul>
-    </div>
+                    <input type="number" name="id" value="@Model.Id" hidden>
+                    <input type="number" name="amount" min="1", max="100" size="5" step="1" value="1">
+                    <input type="submit" value="В корзину" class="btn btn-primary btn-sm rounded-bottom">
+                }</p>
+             </div>
+        </div>
 
-    <div>
-        @foreach(var com in @Model.Comments)
-        {
-            <div class="border">
-                <p>@com.Username</p>
-                <p>@com.Rating</p>
-                <p>Дата написания: @com.CreatedAt</p>
-                <p>@com.Text</p>
+        <div">
+             <div>
+                <h6>Оставить отзыв</h6>
+                @using (Html.BeginForm("AddComment", "Comment", FormMethod.Get))
+                {
+                    <input name="id" type="number" value="@Model.Id" hidden />
+                    <p><input name="name" type="text" placeholder="Ваше имя" class="form-control" required /></p>
+                    <p><textarea name="text" maxlength="255" placeholder="Ваш текст(макс. 255 символов)" cols="50" rows="5" class="form-control" required></textarea></p>
+                    <label>Оценка</label>
+                    <div class="form-group">
+                        <div class=form-check>
+                            <input name="rating" type="radio" value="1" class="form-check-input">
+                            <label class="form-check-label">&#9733;&#9734;&#9734;&#9734;&#9734;</label>
+                        </div>
+                        <div class=form-check>
+                            <input name="rating" type="radio" value="2" class="form-check-input">
+                            <label class="form-check-label">&#9733;&#9733;&#9734;&#9734;&#9734;</label>
+                        </div>
+                        <div class=form-check>
+                            <input name="rating" type="radio" value="3" class="form-check-input">
+                            <label class="form-check-label">&#9733;&#9733;&#9733;&#9734;&#9734;</label>
+                        </div>
+                        <div class=form-check>
+                            <input name="rating" type="radio" value="4" class="form-check-input">
+                            <label class="form-check-label">&#9733;&#9733;&#9733;&#9733;&#9734;</label>
+                        </div>
+                        <div class=form-check>
+                            <input name="rating" type="radio" value="5" class="form-check-input">
+                            <label class="form-check-label">&#9733;&#9733;&#9733;&#9733;&#9733;</label>
+                        </div>
+                    </div>
+                    <input type="submit" value="Оставить отзыв" class="btn btn-sm btn-primary"/>
+                }
             </div>
-        }
-    </div>
+            <hr />
+            <h6>Отзывы</h6>
+            <div>
+                @foreach(var com in @Model.Comments)
+                {
+                    <div class="border border-success border-opacity-50 bg-light rounded col-5 mb-2 p-2">
+                        <p class="mb-1">@switch (com.Rating)
+                        {
+                            case 1:
+                                <h7>&#9733;&#9734;&#9734;&#9734;&#9734;</h7>
+                                break;
+                            case 2:
+                                <h7>&#9733;&#9733;&#9734;&#9734;&#9734;</h7>
+                                break;
+                            case 3:
+                                <h7>&#9733;&#9733;&#9733;&#9734;&#9734;</h7>
+                                break;
+                            case 4:
+                                <h7>&#9733;&#9733;&#9733;&#9733;&#9734;</h7>
+                                break;
+                            case 5:
+                                <h7>&#9733;&#9733;&#9733;&#9733;&#9733;</h7>
+                                break;
+                        }</p>
+                        <p class="mb-1">@com.CreatedAt</p>
+                        <p class="mb-1">@com.Username</p>
+                        <p class="mb-1">@com.Text</p>
+                    </div>
+                }
+            </div>
 
-    <div>
-        <h6>Оставить отзыв</h6>
-        @using (Html.BeginForm("AddComment", "Comment", FormMethod.Get))
-        {
-            <input name="id" type="number" value="@Model.Id" hidden />
-            <p><input name="name" type="text" placeholder="Ваше имя" required /></p>
-            <p><textarea name="text" maxlength="255" placeholder="Ваш текст(макс. 255 символов)" cols="50" rows="5" required></textarea></p>
-            <label>Оценка</label>
-            <p><input name="rating" type="radio" value="1">1
-            <input name="rating" type="radio" value="2">2
-            <input name="rating" type="radio" value="3">3
-            <input name="rating" type="radio" value="4">4
-            <input name="rating" type="radio" value="5" checked>5</p>
-           <input type="submit" value="Оставить отзыв" />
-        }
+           
+        </div>
     </div>
 </div>

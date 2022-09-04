@@ -1,6 +1,21 @@
-﻿<a asp-controller="Customer" asp-action="Index">Покупатели</a><br />
-<a asp-controller="Category" asp-action="Index">Категории</a><br />
-<a asp-controller="Product" asp-action="Index">Товары</a><br />
-<a asp-controller="Order" asp-action="Index">Заказы</a><br />
-<hr />
-@RenderBody()
+﻿<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>@ViewData["Title"]</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container-fluid ">
+        <div class="row h-100">
+            <div class="col-2 pt-2" style="background-color: rgb(80, 80, 90);">
+                <a asp-controller="Customer" asp-action="Index" class="text-decoration-none text-light">Покупатели</a><br />
+                <a asp-controller="Category" asp-action="Index" class="text-decoration-none text-light">Категории</a><br />
+                <a asp-controller="Product" asp-action="Index" class="text-decoration-none text-light">Товары</a><br />
+                <a asp-controller="Order" asp-action="Index" class="text-decoration-none text-light">Заказы</a><br />
+            </div>
+            <div class="col-10" style="background-color: rgb(40, 40, 50);">
+                 @RenderBody()
+            </div>
+        </div>
+    </div>
+</body>

@@ -26,15 +26,6 @@ namespace WebUI.Controllers
             return View();
         }
 
-        public IActionResult Catalog()
-        {
-            return View();
-        }
-
-        public IActionResult HowToBuy()
-        {
-            return View();
-        }
         public IActionResult Contacts()
         {
             return View();

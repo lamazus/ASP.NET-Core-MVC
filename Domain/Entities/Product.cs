@@ -12,5 +12,15 @@
         public int NumberOfOrders { get; set; }
         public string ImageName { get; set; } = string.Empty;
         public List<Comment> Comments { get; set; } = new List<Comment>();
+
+        public double CalculateRating()
+        {
+            int rate = 0;
+            foreach (var com in Comments)
+            {
+                rate += com.Rating;
+            }
+            return Math.Round((double)(rate / Comments.Count), 2);
+        }
     }
 }

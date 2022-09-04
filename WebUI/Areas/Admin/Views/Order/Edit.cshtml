@@ -5,35 +5,41 @@
     var timesOfDay = new List<string>{"9:00 - 12:00", "12:00 - 17:00", "17:00 - 21:00"};
     ViewBag.timesOfDay = new SelectList(timesOfDay);
 }
-<h3>Заказ номер @Model.OrderId</h3>
+<h3 class="text-light">Заказ номер @Model.OrderId</h3>
 
-<h4>Информация о покупателе</h4>
-<b>Имя</b><br />
-<a asp-controller="Customer" asp-action="Details" asp-route-customerId="@Model.Customer.CustomerId">@Model.Customer.Name</a><br />
-<b>Адрес электронной почты</b><br />
-@Model.Customer.Email
+<h4 class="text-light">Информация о покупателе</h4>
+<div class="text-light">
+    <b>Имя</b><br />
+    <a asp-controller="Customer" asp-action="Details" asp-route-customerId="@Model.Customer.CustomerId" class="text-info">@Model.Customer.Name</a><br />
+    <b>Адрес электронной почты</b><br />
+    @Model.Customer.Email
 
-<h4>Информация о заказе</h4>
-@Model.DeliveryDate.Date @Model.DeliveryTime<br />
-<b>Оплачен</b><br />
-@(Model.IsPaid ? "Да" : "Нет")<br/>
-<b>Доставлен</b><br />
-@(Model.IsDelivered ? "Да" : "Нет")<br/>
-<b>Итоговая стоимость</b><br />
-@($"{Model.TotalPrice:C}")<br />
-<b>Комментарий к заказу</b><br />
-@Model.Commentary<br />
+    <h4 class="text-light">Информация о заказе</h4>
 
-<h4>Перенести доставку</h4>
-<form asp-action="Edit" method="post">
+    @Model.DeliveryDate.Date @Model.DeliveryTime<br />
+    <b>Оплачен</b><br />
+    @(Model.IsPaid ? "Да" : "Нет")<br/>
+    <b>Доставлен</b><br />
+    @(Model.IsDelivered ? "Да" : "Нет")<br/>
+    <b>Итоговая стоимость</b><br />
+    @($"{Model.TotalPrice:C}")<br />
+    <b>Комментарий к заказу</b><br />
+    @Model.Commentary<br />
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <label>Дата доставки</label><br />
-    <input asp-for="DeliveryDate" type="date" min="@DateTime.Now.AddDays(3).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")" required />
-    <label>Время доставки</label><br />
-    <select asp-for="DeliveryTime" asp-items="@ViewBag.timesOfDay" required></select>
-    <label>Комментарий</label><br />
-    <textarea asp-for="Commentary" maxlength="255" value=""></textarea>
-    <span asp-validation-for="Commentary" class="text-danger"></span>
-    <input type="submit" value="Сохранить"/>
-</form>
+    <h4 class="text-light">Перенести доставку</h4>
+    <form asp-action="Edit" method="post" class="form-group">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <label class="form-label">Дата доставки</label><br />
+        <input asp-for="DeliveryDate" type="date" min="@DateTime.Now.AddDays(3).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")" required />
+
+        <label class="form-label">Время доставки</label><br />
+        <select asp-for="DeliveryTime" asp-items="@ViewBag.timesOfDay" required></select>
+
+        <label class="form-label">Комментарий</label><br />
+        <textarea asp-for="Commentary" maxlength="255" value=""></textarea>
+        <span asp-validation-for="Commentary" class="text-danger"></span>
+        <input type="submit" value="Сохранить" class="btn btn-sm btn-outline-success mt-2"/>
+    </form>
+</div>
